@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/hotel
+    username: root
+    password:
+  jpa:
+    hibernate.ddl-auto: validate
+    generate-ddl: false
+    show-sql: true
