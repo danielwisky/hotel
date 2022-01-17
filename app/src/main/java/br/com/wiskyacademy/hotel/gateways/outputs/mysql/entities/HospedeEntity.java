@@ -1,18 +1,13 @@
 package br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities;
 
-import static java.util.Optional.ofNullable;
-
 import br.com.wiskyacademy.hotel.domains.Hospede;
-import java.time.LocalDateTime;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.time.LocalDate;
+
+import static java.util.Optional.ofNullable;
 
 @Data
 @NoArgsConstructor
@@ -27,7 +22,7 @@ public class HospedeEntity {
   @Column(nullable = false, length = 20)
   private String documento;
   @Column(nullable = false, name = "dt_nascimento")
-  private LocalDateTime dataNascimento;
+  private LocalDate dataNascimento;
   @OneToOne(mappedBy = "hospede", cascade = CascadeType.ALL)
   private EnderecoEntity endereco;
   @Column(nullable = false, length = 100, unique = true)

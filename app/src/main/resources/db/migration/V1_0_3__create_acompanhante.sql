@@ -1,6 +1,6 @@
 CREATE TABLE `acompanhante` (
   `id` int(11) NOT NULL AUTO_INCREMENT, 
-  `dt_nascimento` datetime(6) NOT NULL, 
+  `dt_nascimento` date NOT NULL,
   `documento` varchar(20) NOT NULL, 
   `nome` varchar(100) NOT NULL, 
   `hospede_id` int(11) NOT NULL,
