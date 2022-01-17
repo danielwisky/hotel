@@ -1,4 +1,4 @@
-package br.com.wiskyacademy.hotel.gateways.mysql.entities;
+package br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities;
 
 import br.com.wiskyacademy.hotel.domains.Endereco;
 import javax.persistence.CascadeType;

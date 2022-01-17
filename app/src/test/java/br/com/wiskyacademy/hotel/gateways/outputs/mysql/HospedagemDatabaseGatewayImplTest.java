@@ -1,4 +1,4 @@
-package br.com.wiskyacademy.hotel.gateways.mysql;
+package br.com.wiskyacademy.hotel.gateways.outputs.mysql;
 
 import static br.com.wiskyacademy.hotel.templates.FixtureCoreTemplates.VALIDO;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -10,8 +10,8 @@ import static org.mockito.Mockito.when;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.wiskyacademy.hotel.UnitTest;
 import br.com.wiskyacademy.hotel.domains.Hospedagem;
-import br.com.wiskyacademy.hotel.gateways.mysql.entities.HospedagemEntity;
-import br.com.wiskyacademy.hotel.gateways.mysql.repositories.HospedagemRepository;
+import br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.HospedagemEntity;
+import br.com.wiskyacademy.hotel.gateways.outputs.mysql.repositories.HospedagemRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

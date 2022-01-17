@@ -1,4 +1,4 @@
-package br.com.wiskyacademy.hotel.gateways.mysql.entities;
+package br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities;
 
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;

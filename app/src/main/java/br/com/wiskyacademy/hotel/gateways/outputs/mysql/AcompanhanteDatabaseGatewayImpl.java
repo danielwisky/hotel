@@ -1,9 +1,9 @@
-package br.com.wiskyacademy.hotel.gateways.mysql;
+package br.com.wiskyacademy.hotel.gateways.outputs.mysql;
 
 import br.com.wiskyacademy.hotel.domains.Acompanhante;
 import br.com.wiskyacademy.hotel.gateways.AcompanhanteDatabaseGateway;
-import br.com.wiskyacademy.hotel.gateways.mysql.entities.AcompanhanteEntity;
-import br.com.wiskyacademy.hotel.gateways.mysql.repositories.AcompanhanteRepository;
+import br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.AcompanhanteEntity;
+import br.com.wiskyacademy.hotel.gateways.outputs.mysql.repositories.AcompanhanteRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

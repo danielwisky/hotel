@@ -20,7 +20,7 @@ public class SpringFoxConfiguration {
   public Docket documentation() {
     return new Docket(DocumentationType.SWAGGER_2)
         .select()
-        .apis(RequestHandlerSelectors.basePackage("br.com.wiskyacademy.hotel.gateways.http"))
+        .apis(RequestHandlerSelectors.basePackage("br.com.wiskyacademy.hotel.gateways.inputs.http"))
         .paths(PathSelectors.any())
         .build()
         .useDefaultResponseMessages(false)
