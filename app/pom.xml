@@ -190,6 +190,7 @@
                     <exclude>**.configurations.**</exclude>
                     <exclude>**.domains.**</exclude>
                     <exclude>**.entities.**</exclude>
+                    <exclude>**.resources.**</exclude>
 
                     <exclude>br.com.wiskyacademy.hotel.HotelApplication</exclude>
                   </excludes>

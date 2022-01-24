@@ -11,6 +11,7 @@ import br.com.wiskyacademy.hotel.gateways.AcomodacaoDatabaseGateway;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.AcomodacaoRequest;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.AcomodacaoResponse;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.FiltroAcomodacaoRequest;
+import br.com.wiskyacademy.hotel.usecases.UpdateAcomodacao;
 import io.swagger.annotations.ApiOperation;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,8 @@ public class AcomodacaoController {
 
   private final AcomodacaoDatabaseGateway acomodacaoDatabaseGateway;
 
+  private final UpdateAcomodacao updateAcomodacao;
+
   @PostMapping
   @ResponseStatus(OK)
   @ApiOperation(value = "Criar uma acomodação")
@@ -53,7 +56,7 @@ public class AcomodacaoController {
       @RequestBody @Valid final AcomodacaoRequest acomodacaoRequest) {
 
     return ResponseEntity.ok(
-        new AcomodacaoResponse(acomodacaoDatabaseGateway.save(acomodacaoRequest.toDomain())));
+        new AcomodacaoResponse(updateAcomodacao.execute(id, acomodacaoRequest.toDomain())));
   }
 
   @GetMapping("/{id}")

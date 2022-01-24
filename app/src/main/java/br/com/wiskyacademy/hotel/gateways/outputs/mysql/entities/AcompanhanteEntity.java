@@ -1,13 +1,19 @@
 package br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities;
 
+import static java.util.Optional.ofNullable;
+
 import br.com.wiskyacademy.hotel.domains.Acompanhante;
+import java.time.LocalDate;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.time.LocalDate;
-
-import static java.util.Optional.ofNullable;
 
 @Data
 @NoArgsConstructor
