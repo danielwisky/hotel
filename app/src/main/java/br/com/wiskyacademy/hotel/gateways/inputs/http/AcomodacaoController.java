@@ -2,7 +2,9 @@ package br.com.wiskyacademy.hotel.gateways.inputs.http;
 
 import static br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.AcomodacaoEntity_.ID;
 import static java.util.stream.Collectors.toList;
+import static org.springframework.data.domain.PageRequest.of;
 import static org.springframework.data.domain.Sort.Direction.ASC;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 
 import br.com.wiskyacademy.hotel.domains.Acomodacao;
@@ -11,13 +13,12 @@ import br.com.wiskyacademy.hotel.gateways.AcomodacaoDatabaseGateway;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.AcomodacaoRequest;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.AcomodacaoResponse;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.FiltroAcomodacaoRequest;
+import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.PageResponse;
 import br.com.wiskyacademy.hotel.usecases.UpdateAcomodacao;
 import io.swagger.annotations.ApiOperation;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,14 +50,14 @@ public class AcomodacaoController {
   }
 
   @PutMapping("/{id}")
-  @ResponseStatus(OK)
+  @ResponseStatus(NO_CONTENT)
   @ApiOperation(value = "Editar uma acomodação")
-  public ResponseEntity<AcomodacaoResponse> editar(
+  public ResponseEntity editar(
       @PathVariable final Integer id,
       @RequestBody @Valid final AcomodacaoRequest acomodacaoRequest) {
 
-    return ResponseEntity.ok(
-        new AcomodacaoResponse(updateAcomodacao.execute(id, acomodacaoRequest.toDomain())));
+    updateAcomodacao.execute(id, acomodacaoRequest.toDomain());
+    return ResponseEntity.noContent().build();
   }
 
   @GetMapping("/{id}")
@@ -72,16 +73,18 @@ public class AcomodacaoController {
   @GetMapping
   @ResponseStatus(OK)
   @ApiOperation(value = "Pesquisa acomodações cadastradas")
-  public ResponseEntity<Page<AcomodacaoResponse>> pesquisar(
+  public ResponseEntity<PageResponse<AcomodacaoResponse>> pesquisar(
       final FiltroAcomodacaoRequest filtro,
-      @RequestParam(defaultValue = "0") final Integer page,
-      @RequestParam(defaultValue = "20") final Integer size) {
+      @RequestParam(defaultValue = "0") final Integer pagina,
+      @RequestParam(defaultValue = "20") final Integer tamanho) {
     final Page<Acomodacao> resultado =
-        acomodacaoDatabaseGateway.search(filtro.toDomain(), PageRequest.of(page, size, ASC, ID));
-    return ResponseEntity.ok(
-        new PageImpl<>(
-            resultado.getContent().stream().map(AcomodacaoResponse::new).collect(toList()),
-            resultado.getPageable(),
-            resultado.getTotalElements()));
+        acomodacaoDatabaseGateway.search(filtro.toDomain(), of(pagina, tamanho, ASC, ID));
+
+    return ResponseEntity.ok(new PageResponse<>(
+        resultado.getContent().stream().map(AcomodacaoResponse::new).collect(toList()),
+        resultado.getTotalElements(),
+        resultado.getTotalPages(),
+        pagina,
+        tamanho));
   }
 }
