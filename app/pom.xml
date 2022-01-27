@@ -23,7 +23,11 @@
     <flyway.version>7.15.0</flyway.version>
     <springfox.swagger.version>2.9.2</springfox.swagger.version>
     <commons-collections4.version>4.4</commons-collections4.version>
+    <testcontainers.version>1.16.3</testcontainers.version>
+    <mockito-core.version>4.3.0</mockito-core.version>
     <fixture-factory.version>3.1.0</fixture-factory.version>
+    <junit-vintage-engine.version>5.8.2</junit-vintage-engine.version>
+    <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
     <pitest-plugin.version>1.7.3</pitest-plugin.version>
     <jacoco-plugin.version>0.8.7</jacoco-plugin.version>
   </properties>
@@ -74,6 +78,12 @@
       <version>${flyway.version}</version>
     </dependency>
 
+    <!-- jpa model gen -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-jpamodelgen</artifactId>
+    </dependency>
+
     <!-- commons -->
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -91,6 +101,18 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>${mockito-core.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>testcontainers</artifactId>
+      <version>${testcontainers.version}</version>
+      <scope>test</scope>
+    </dependency>
 
     <dependency>
       <groupId>br.com.six2six</groupId>
@@ -98,6 +120,14 @@
       <version>${fixture-factory.version}</version>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
+      <version>${junit-vintage-engine.version}</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -108,12 +138,21 @@
         <configuration>
           <source>${java.version}</source>
           <target>${java.version}</target>
+          <compilerArguments>
+            <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor,lombok.launch.AnnotationProcessorHider$AnnotationProcessor</processor>
+          </compilerArguments>
         </configuration>
       </plugin>
 
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven-surefire-plugin.version}</version>
       </plugin>
 
       <plugin>
@@ -178,7 +217,9 @@
                     <exclude>**.configurations.**</exclude>
                     <exclude>**.domains.**</exclude>
                     <exclude>**.entities.**</exclude>
+                    <exclude>**.resources.**</exclude>
 
+                    <exclude>br.com.wiskyacademy.hotel.gateways.inputs.http.CustomExceptionHandler</exclude>
                     <exclude>br.com.wiskyacademy.hotel.HotelApplication</exclude>
                   </excludes>
                 </rule>
