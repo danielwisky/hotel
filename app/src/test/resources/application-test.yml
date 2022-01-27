@@ -3,6 +3,10 @@ spring:
     url: ${MYSQL_URI}
     username: ${MYSQL_USER}
     password: ${MYSQL_PASSWORD}
+  jpa:
+    hibernate.ddl-auto: validate
+    generate-ddl: false
+    show-sql: true
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
