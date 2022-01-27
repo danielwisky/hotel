@@ -10,5 +10,5 @@ CREATE TABLE `endereco` (
   `hospede_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_ENDERECO_HOSPEDE` (`hospede_id`),
-  CONSTRAINT `FK_ENDERECO_HOSPEDE` FOREIGN KEY (`hospede_id`) REFERENCES `hospede` (`id`)
+  CONSTRAINT `FK_ENDERECO_HOSPEDE` FOREIGN KEY (`hospede_id`) REFERENCES `hospede` (`id`) ON DELETE CASCADE
   ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

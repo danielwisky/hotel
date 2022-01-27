@@ -2,7 +2,6 @@ package br.com.wiskyacademy.hotel.gateways.inputs.http;
 
 import static br.com.six2six.fixturefactory.Fixture.from;
 import static br.com.wiskyacademy.hotel.templates.FixtureCoreTemplates.VALIDO;
-import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -15,6 +14,10 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 import br.com.wiskyacademy.hotel.IntegrationTest;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.AcomodacaoRequest;
 import br.com.wiskyacademy.hotel.gateways.outputs.mysql.repositories.AcomodacaoRepository;
+import br.com.wiskyacademy.hotel.gateways.outputs.mysql.repositories.AcompanhanteRepository;
+import br.com.wiskyacademy.hotel.gateways.outputs.mysql.repositories.EnderecoRepository;
+import br.com.wiskyacademy.hotel.gateways.outputs.mysql.repositories.HospedagemRepository;
+import br.com.wiskyacademy.hotel.gateways.outputs.mysql.repositories.HospedeRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +32,18 @@ public class AcomodacaoControllerTest extends IntegrationTest {
 
   @Autowired
   private AcomodacaoRepository acomodacaoRepository;
+
+  @Autowired
+  private AcompanhanteRepository acompanhanteRepository;
+
+  @Autowired
+  private HospedagemRepository hospedagemRepository;
+
+  @Autowired
+  private EnderecoRepository enderecoRepository;
+
+  @Autowired
+  private HospedeRepository hospedeRepository;
 
   @Autowired
   private ObjectMapper objectMapper;

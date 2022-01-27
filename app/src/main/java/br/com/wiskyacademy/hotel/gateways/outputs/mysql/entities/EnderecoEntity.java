@@ -34,7 +34,7 @@ public class EnderecoEntity {
   private String logradouro;
   @Column(length = 100)
   private String complemento;
-  @OneToOne(cascade = CascadeType.ALL)
+  @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "hospede_id")
   private HospedeEntity hospede;
 
