@@ -2,6 +2,8 @@ package br.com.wiskyacademy.hotel.gateways.inputs.http;
 
 import static br.com.six2six.fixturefactory.Fixture.from;
 import static br.com.wiskyacademy.hotel.templates.FixtureCoreTemplates.VALIDO;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -14,10 +16,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 import br.com.wiskyacademy.hotel.IntegrationTest;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.AcomodacaoRequest;
 import br.com.wiskyacademy.hotel.gateways.outputs.mysql.repositories.AcomodacaoRepository;
-import br.com.wiskyacademy.hotel.gateways.outputs.mysql.repositories.AcompanhanteRepository;
-import br.com.wiskyacademy.hotel.gateways.outputs.mysql.repositories.EnderecoRepository;
-import br.com.wiskyacademy.hotel.gateways.outputs.mysql.repositories.HospedagemRepository;
-import br.com.wiskyacademy.hotel.gateways.outputs.mysql.repositories.HospedeRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,18 +32,6 @@ public class AcomodacaoControllerTest extends IntegrationTest {
   private AcomodacaoRepository acomodacaoRepository;
 
   @Autowired
-  private AcompanhanteRepository acompanhanteRepository;
-
-  @Autowired
-  private HospedagemRepository hospedagemRepository;
-
-  @Autowired
-  private EnderecoRepository enderecoRepository;
-
-  @Autowired
-  private HospedeRepository hospedeRepository;
-
-  @Autowired
   private ObjectMapper objectMapper;
 
   private MockMvc mockMVC;
@@ -60,11 +46,27 @@ public class AcomodacaoControllerTest extends IntegrationTest {
   public void deveCriarUmaAcomodacao() throws Exception {
     final AcomodacaoRequest acomodacaoRequest = from(AcomodacaoRequest.class).gimme(VALIDO.name());
     mockMVC
-        .perform(post("/api/v1/filmes")
+        .perform(post("/api/v1/acomodacoes")
             .contentType(APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(acomodacaoRequest)))
         .andExpect(status().isOk())
         .andExpect(header().string(CONTENT_TYPE, APPLICATION_JSON_VALUE))
-        .andExpect(jsonPath("$.nome").value(acomodacaoRequest.getNome()));
+        .andExpect(jsonPath("$.nome").value(acomodacaoRequest.getNome()))
+        .andExpect(jsonPath("$.descricao").value(acomodacaoRequest.getDescricao()))
+        .andExpect(jsonPath("$.capacidade").value(acomodacaoRequest.getCapacidade()))
+        .andExpect(jsonPath("$.preco").value(acomodacaoRequest.getPreco()));
+  }
+
+  @Test
+  public void aoCriarUmaAcomodacaoDeveValidarCamposObrigatorios() throws Exception {
+    mockMVC
+        .perform(post("/api/v1/acomodacoes")
+            .contentType(APPLICATION_JSON)
+            .content("{}"))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.erros", hasSize(3)))
+        .andExpect(jsonPath("$.erros", hasItems("preco: must not be null")))
+        .andExpect(jsonPath("$.erros", hasItems("capacidade: must not be null")))
+        .andExpect(jsonPath("$.erros", hasItems("nome: must not be blank")));
   }
 }
