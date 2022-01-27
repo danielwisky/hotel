@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = {HotelApplication.class}, webEnvironment = RANDOM_PORT)
 @ActiveProfiles("test")
-public class IntegrationTest {
+public abstract class IntegrationTest {
 
   @ClassRule
   public static MySQLContainerConfiguration mySQLContainerConfiguration =

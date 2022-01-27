@@ -1,5 +1,5 @@
 package br.com.wiskyacademy.hotel.templates;
 
 public enum FixtureCoreTemplates {
-  VALIDO
+  VALIDO, VALIDO_SEM_ID
 }
