@@ -12,7 +12,7 @@ public class UpdateAcomodacao {
 
   private final AcomodacaoDatabaseGateway acomodacaoDatabaseGateway;
 
-  public void execute(final Integer id, final Acomodacao acomodacao) {
+  public Acomodacao execute(final Integer id, final Acomodacao acomodacao) {
 
     final Acomodacao acomodacaoDatabase =
         acomodacaoDatabaseGateway.findById(id).orElseThrow(ResourceNotFoundException::new);
@@ -22,6 +22,6 @@ public class UpdateAcomodacao {
     acomodacaoDatabase.setCapacidade(acomodacao.getCapacidade());
     acomodacaoDatabase.setPreco(acomodacao.getPreco());
 
-    acomodacaoDatabaseGateway.save(acomodacaoDatabase);
+    return acomodacaoDatabaseGateway.save(acomodacaoDatabase);
   }
 }

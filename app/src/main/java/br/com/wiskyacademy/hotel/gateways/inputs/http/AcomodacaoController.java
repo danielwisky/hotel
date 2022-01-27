@@ -4,7 +4,6 @@ import static br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.Acomodac
 import static java.util.stream.Collectors.toList;
 import static org.springframework.data.domain.PageRequest.of;
 import static org.springframework.data.domain.Sort.Direction.ASC;
-import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 
 import br.com.wiskyacademy.hotel.domains.Acomodacao;
@@ -50,14 +49,14 @@ public class AcomodacaoController {
   }
 
   @PutMapping("/{id}")
-  @ResponseStatus(NO_CONTENT)
+  @ResponseStatus(OK)
   @ApiOperation(value = "Editar uma acomodação")
-  public ResponseEntity editar(
+  public ResponseEntity<AcomodacaoResponse> editar(
       @PathVariable final Integer id,
       @RequestBody @Valid final AcomodacaoRequest acomodacaoRequest) {
 
-    updateAcomodacao.execute(id, acomodacaoRequest.toDomain());
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.ok(
+        new AcomodacaoResponse(updateAcomodacao.execute(id, acomodacaoRequest.toDomain())));
   }
 
   @GetMapping("/{id}")

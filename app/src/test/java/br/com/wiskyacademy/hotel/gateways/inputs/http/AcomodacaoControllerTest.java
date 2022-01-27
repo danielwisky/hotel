@@ -12,6 +12,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -78,6 +79,46 @@ public class AcomodacaoControllerTest extends IntegrationTest {
         .andExpect(jsonPath("$.erros", hasItems("preco: must not be null")))
         .andExpect(jsonPath("$.erros", hasItems("capacidade: must not be null")))
         .andExpect(jsonPath("$.erros", hasItems("nome: must not be blank")));
+  }
+
+  @Test
+  public void deveEditarUmaAcomodacao() throws Exception {
+    final AcomodacaoRequest acomodacaoRequest = from(AcomodacaoRequest.class).gimme(VALIDO.name());
+    final Acomodacao acomodacao =
+        acomodacaoDatabaseGateway.save(from(Acomodacao.class).gimme(VALIDO_SEM_ID.name()));
+
+    mockMVC
+        .perform(put(format(URL_WITH_PARAM, acomodacao.getId()))
+            .contentType(APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(acomodacaoRequest)))
+        .andExpect(status().isOk())
+        .andExpect(header().string(CONTENT_TYPE, APPLICATION_JSON_VALUE))
+        .andExpect(jsonPath("$.nome").value(acomodacaoRequest.getNome()))
+        .andExpect(jsonPath("$.descricao").value(acomodacaoRequest.getDescricao()))
+        .andExpect(jsonPath("$.capacidade").value(acomodacaoRequest.getCapacidade()))
+        .andExpect(jsonPath("$.preco").value(acomodacaoRequest.getPreco()));
+  }
+
+  @Test
+  public void aoEditarUmaAcomodacaoDeveValidarCamposObrigatorios() throws Exception {
+    mockMVC
+        .perform(
+            put(format(URL_WITH_PARAM, INTEGER_ONE)).contentType(APPLICATION_JSON).content("{}"))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.erros", hasSize(3)))
+        .andExpect(jsonPath("$.erros", hasItems("preco: must not be null")))
+        .andExpect(jsonPath("$.erros", hasItems("capacidade: must not be null")))
+        .andExpect(jsonPath("$.erros", hasItems("nome: must not be blank")));
+  }
+
+  @Test
+  public void aoEditarUmaAcomodacaoDeveRetornar404QuandoNaoEncontrado() throws Exception {
+    final AcomodacaoRequest acomodacaoRequest = from(AcomodacaoRequest.class).gimme(VALIDO.name());
+    mockMVC
+        .perform(put(format(URL_WITH_PARAM, INTEGER_ONE))
+            .contentType(APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(acomodacaoRequest)))
+        .andExpect(status().isNotFound());
   }
 
   @Test
