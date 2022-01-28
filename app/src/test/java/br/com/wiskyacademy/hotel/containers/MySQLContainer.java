@@ -15,26 +15,25 @@ public class MySQLContainer extends GenericContainer<MySQLContainer> {
   private static final String MYSQL_ROOT_PASSWORD = "MYSQL_ROOT_PASSWORD";
   private static final String MYSQL_URL_PATTERN = "jdbc:mysql://%s:%s/%s?useSSL=false";
 
-  private static final String DB_USER = "test";
-  private static final String DB_PASSWORD = "test";
-
   private final String mysqlDBName;
 
-  public MySQLContainer(final String mysqlVersion, final String mysqlDBName) {
-    super("mysql:" + mysqlVersion);
-    this.mysqlDBName = mysqlDBName;
+  public MySQLContainer(
+      final String image, final String database, final String user, final String password) {
+
+    super("mysql:" + image);
+    this.mysqlDBName = database;
 
     addEnv(MYSQL_DATABASE, mysqlDBName);
-    addEnv(MYSQL_USER, DB_USER);
-    addEnv(MYSQL_PASSWORD, DB_PASSWORD);
-    addEnv(MYSQL_ROOT_PASSWORD, DB_PASSWORD);
+    addEnv(MYSQL_USER, user);
+    addEnv(MYSQL_PASSWORD, password);
+    addEnv(MYSQL_ROOT_PASSWORD, password);
 
     withNetworkAliases("mysql-" + Base58.randomString(6));
     withExposedPorts(MYSQL_PORT);
     waitingFor(Wait.forListeningPort());
 
-    System.setProperty(MYSQL_USER, DB_USER);
-    System.setProperty(MYSQL_PASSWORD, DB_PASSWORD);
+    System.setProperty(MYSQL_USER, user);
+    System.setProperty(MYSQL_PASSWORD, password);
   }
 
   public String getMySQLUri() {
