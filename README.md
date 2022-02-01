@@ -17,6 +17,7 @@ O Sistema de Gestão de Hospedagem será utilizado na ministração de um curso 
 * [Maven](https://maven.apache.org/)
 * [MySQL](https://www.mysql.com/)
 * [Flyway](https://flywaydb.org/)
+* [Fixture Factory](https://github.com/six2six/fixture-factory)
 
 ## Modelo de dados:
 
