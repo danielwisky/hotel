@@ -9,6 +9,7 @@ import org.testcontainers.utility.Base58;
 public class MySQLContainer extends GenericContainer<MySQLContainer> {
 
   private static final int MYSQL_PORT = 3306;
+  private static final String MYSQL = "mysql";
   private static final String MYSQL_DATABASE = "MYSQL_DATABASE";
   private static final String MYSQL_USER = "MYSQL_USER";
   private static final String MYSQL_PASSWORD = "MYSQL_PASSWORD";
@@ -20,7 +21,7 @@ public class MySQLContainer extends GenericContainer<MySQLContainer> {
   public MySQLContainer(
       final String image, final String database, final String user, final String password) {
 
-    super("mysql:" + image);
+    super(format("%s:%s", MYSQL, image));
     this.mysqlDBName = database;
 
     addEnv(MYSQL_DATABASE, mysqlDBName);
@@ -28,7 +29,7 @@ public class MySQLContainer extends GenericContainer<MySQLContainer> {
     addEnv(MYSQL_PASSWORD, password);
     addEnv(MYSQL_ROOT_PASSWORD, password);
 
-    withNetworkAliases("mysql-" + Base58.randomString(6));
+    withNetworkAliases(format("%s-%s", MYSQL, Base58.randomString(6)));
     withExposedPorts(MYSQL_PORT);
     waitingFor(Wait.forListeningPort());
 
