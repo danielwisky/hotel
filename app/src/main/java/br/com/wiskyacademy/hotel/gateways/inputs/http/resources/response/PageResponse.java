@@ -1,4 +1,4 @@
-package br.com.wiskyacademy.hotel.gateways.inputs.http.resources;
+package br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response;
 
 import java.util.List;
 import lombok.Data;

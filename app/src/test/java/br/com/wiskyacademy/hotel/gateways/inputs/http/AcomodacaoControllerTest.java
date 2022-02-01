@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 import br.com.wiskyacademy.hotel.IntegrationTest;
 import br.com.wiskyacademy.hotel.domains.Acomodacao;
 import br.com.wiskyacademy.hotel.gateways.AcomodacaoDatabaseGateway;
-import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.AcomodacaoRequest;
+import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.AcomodacaoRequest;
 import br.com.wiskyacademy.hotel.gateways.outputs.mysql.repositories.AcomodacaoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -158,7 +158,6 @@ public class AcomodacaoControllerTest extends IntegrationTest {
     mockMVC
         .perform(get(format(URL)).contentType(APPLICATION_JSON))
         .andExpect(status().isOk())
-        .andExpect(status().isOk())
         .andExpect(jsonPath("$.elementos", hasSize(1)))
         .andExpect(jsonPath("$.elementos[0].id").value(acomodacao.getId()))
         .andExpect(jsonPath("$.elementos[0].nome").value(acomodacao.getNome()))
@@ -183,7 +182,6 @@ public class AcomodacaoControllerTest extends IntegrationTest {
             .param(NOME, acomodacao.getNome())
             .param(DESCRICAO, acomodacao.getDescricao())
             .contentType(APPLICATION_JSON))
-        .andExpect(status().isOk())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.elementos", hasSize(1)))
         .andExpect(jsonPath("$.elementos[0].id").value(acomodacao.getId()))
@@ -210,7 +208,6 @@ public class AcomodacaoControllerTest extends IntegrationTest {
             .param("precoMenorQue", acomodacao.getPreco().toString())
             .contentType(APPLICATION_JSON))
         .andExpect(status().isOk())
-        .andExpect(status().isOk())
         .andExpect(jsonPath("$.elementos", hasSize(1)))
         .andExpect(jsonPath("$.elementos[0].id").value(acomodacao.getId()))
         .andExpect(jsonPath("$.elementos[0].nome").value(acomodacao.getNome()))
@@ -235,7 +232,6 @@ public class AcomodacaoControllerTest extends IntegrationTest {
             .param("capacidadeMaiorQue", acomodacao.getCapacidade().toString())
             .param("capacidadeMenorQue", acomodacao.getCapacidade().toString())
             .contentType(APPLICATION_JSON))
-        .andExpect(status().isOk())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.elementos", hasSize(1)))
         .andExpect(jsonPath("$.elementos[0].id").value(acomodacao.getId()))

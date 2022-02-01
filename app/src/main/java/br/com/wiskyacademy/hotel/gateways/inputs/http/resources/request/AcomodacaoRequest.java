@@ -1,4 +1,4 @@
-package br.com.wiskyacademy.hotel.gateways.inputs.http.resources;
+package br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request;
 
 import br.com.wiskyacademy.hotel.domains.Acomodacao;
 import javax.validation.constraints.NotBlank;

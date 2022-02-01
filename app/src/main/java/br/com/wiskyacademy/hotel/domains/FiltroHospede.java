@@ -1,6 +1,5 @@
 package br.com.wiskyacademy.hotel.domains;
 
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,12 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Acomodacao {
+public class FiltroHospede {
 
-  private Integer id;
   private String nome;
-  private String descricao;
-  private Integer capacidade;
-  private Float preco;
-  private LocalDateTime dataAtualizacao;
+  private String documento;
 }

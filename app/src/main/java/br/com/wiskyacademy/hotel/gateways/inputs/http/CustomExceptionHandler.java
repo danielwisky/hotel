@@ -7,7 +7,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import br.com.wiskyacademy.hotel.domains.exceptions.ResourceNotFoundException;
-import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.ErroResponse;
+import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response.ErroResponse;
 import java.util.List;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

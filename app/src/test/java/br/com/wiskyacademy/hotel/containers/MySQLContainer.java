@@ -33,6 +33,8 @@ public class MySQLContainer extends GenericContainer<MySQLContainer> {
     withExposedPorts(MYSQL_PORT);
     waitingFor(Wait.forListeningPort());
 
+    withReuse(true);
+
     System.setProperty(MYSQL_USER, user);
     System.setProperty(MYSQL_PASSWORD, password);
   }

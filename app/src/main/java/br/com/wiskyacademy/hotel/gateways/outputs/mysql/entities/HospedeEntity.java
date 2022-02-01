@@ -1,5 +1,6 @@
 package br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities;
 
+import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 
 import br.com.wiskyacademy.hotel.domains.Hospede;
@@ -48,6 +49,10 @@ public class HospedeEntity {
     this.email = hospede.getEmail();
     this.telefone = hospede.getTelefone();
     this.celular = hospede.getCelular();
+
+    if (nonNull(this.endereco)) {
+      this.endereco.setHospede(this);
+    }
   }
 
   public Hospede toDomain() {

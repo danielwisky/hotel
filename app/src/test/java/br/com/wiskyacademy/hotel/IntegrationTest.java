@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public abstract class IntegrationTest {
 
   @ClassRule
-  public static MySQLContainerConfiguration mySQLContainerConfiguration =
+  public static final MySQLContainerConfiguration mySQLContainerConfiguration =
       MySQLContainerConfiguration.getInstance();
 
   @BeforeClass
