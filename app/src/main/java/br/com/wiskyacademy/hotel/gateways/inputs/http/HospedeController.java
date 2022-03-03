@@ -6,14 +6,14 @@ import static org.springframework.data.domain.PageRequest.of;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.http.HttpStatus.OK;
 
-import br.com.wiskyacademy.hotel.domains.Acomodacao;
+import br.com.wiskyacademy.hotel.domains.Hospede;
 import br.com.wiskyacademy.hotel.domains.exceptions.ResourceNotFoundException;
-import br.com.wiskyacademy.hotel.gateways.AcomodacaoDatabaseGateway;
-import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.AcomodacaoRequest;
-import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.FiltroAcomodacaoRequest;
-import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response.AcomodacaoResponse;
+import br.com.wiskyacademy.hotel.gateways.HospedeDatabaseGateway;
+import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.FiltroHospedeRequest;
+import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.HospedeRequest;
+import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response.HospedeResponse;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response.PageResponse;
-import br.com.wiskyacademy.hotel.usecases.UpdateAcomodacao;
+import br.com.wiskyacademy.hotel.usecases.UpdateHospede;
 import io.swagger.annotations.ApiOperation;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,56 +31,56 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/acomodacoes")
-public class AcomodacaoController {
+@RequestMapping("/api/v1/hospedes")
+public class HospedeController {
 
-  private final AcomodacaoDatabaseGateway acomodacaoDatabaseGateway;
-
-  private final UpdateAcomodacao updateAcomodacao;
+  private final HospedeDatabaseGateway hospedeDatabaseGateway;
+  
+  private final UpdateHospede updateHospede;
 
   @PostMapping
   @ResponseStatus(OK)
-  @ApiOperation(value = "Criar uma acomodação")
-  public ResponseEntity<AcomodacaoResponse> criar(
-      @RequestBody @Valid final AcomodacaoRequest acomodacaoRequest) {
+  @ApiOperation(value = "Criar um hospede")
+  public ResponseEntity<HospedeResponse> criar(
+      @RequestBody @Valid final HospedeRequest hospedeRequest) {
 
     return ResponseEntity.ok(
-        new AcomodacaoResponse(acomodacaoDatabaseGateway.save(acomodacaoRequest.toDomain())));
+        new HospedeResponse(hospedeDatabaseGateway.save(hospedeRequest.toDomain())));
   }
 
   @PutMapping("/{id}")
   @ResponseStatus(OK)
-  @ApiOperation(value = "Editar uma acomodação")
-  public ResponseEntity<AcomodacaoResponse> editar(
+  @ApiOperation(value = "Editar um hospede")
+  public ResponseEntity<HospedeResponse> editar(
       @PathVariable final Integer id,
-      @RequestBody @Valid final AcomodacaoRequest acomodacaoRequest) {
+      @RequestBody @Valid final HospedeRequest hospedeRequest) {
 
     return ResponseEntity.ok(
-        new AcomodacaoResponse(updateAcomodacao.execute(id, acomodacaoRequest.toDomain())));
+        new HospedeResponse(updateHospede.execute(id, hospedeRequest.toDomain())));
   }
 
   @GetMapping("/{id}")
   @ResponseStatus(OK)
-  @ApiOperation(value = "Buscar uma acomodação por id")
-  public ResponseEntity<AcomodacaoResponse> buscar(@PathVariable final Integer id) {
-    return ResponseEntity.ok(acomodacaoDatabaseGateway
+  @ApiOperation(value = "Buscar um hospede por id")
+  public ResponseEntity<HospedeResponse> buscar(@PathVariable final Integer id) {
+    return ResponseEntity.ok(hospedeDatabaseGateway
         .findById(id)
-        .map(AcomodacaoResponse::new)
+        .map(HospedeResponse::new)
         .orElseThrow(ResourceNotFoundException::new));
   }
 
   @GetMapping
   @ResponseStatus(OK)
-  @ApiOperation(value = "Pesquisa acomodações cadastradas")
-  public ResponseEntity<PageResponse<AcomodacaoResponse>> pesquisar(
-      final FiltroAcomodacaoRequest filtro,
+  @ApiOperation(value = "Pesquisa hospedes cadastrados")
+  public ResponseEntity<PageResponse<HospedeResponse>> pesquisar(
+      final FiltroHospedeRequest filtro,
       @RequestParam(defaultValue = "0") final Integer pagina,
       @RequestParam(defaultValue = "20") final Integer tamanho) {
-    final Page<Acomodacao> resultado =
-        acomodacaoDatabaseGateway.search(filtro.toDomain(), of(pagina, tamanho, ASC, ID));
+    final Page<Hospede> resultado =
+        hospedeDatabaseGateway.search(filtro.toDomain(), of(pagina, tamanho, ASC, ID));
 
     return ResponseEntity.ok(new PageResponse<>(
-        resultado.getContent().stream().map(AcomodacaoResponse::new).collect(toList()),
+        resultado.getContent().stream().map(HospedeResponse::new).collect(toList()),
         resultado.getTotalElements(),
         resultado.getTotalPages(),
         pagina,

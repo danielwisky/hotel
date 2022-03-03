@@ -4,6 +4,7 @@ import static br.com.wiskyacademy.hotel.templates.FixtureCoreTemplates.VALIDO;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -29,11 +30,11 @@ class AcompanhanteDatabaseGatewayImplTest extends UnitTest {
   void deveSalvar() {
     final Acompanhante acompanhante = Fixture.from(Acompanhante.class).gimme(VALIDO.name());
     final AcompanhanteEntity acompanhanteEntity = new AcompanhanteEntity(acompanhante);
-    when(acompanhanteRepository.save(acompanhanteEntity)).thenReturn(acompanhanteEntity);
+    when(acompanhanteRepository.save(any(AcompanhanteEntity.class))).thenReturn(acompanhanteEntity);
 
     final Acompanhante retorno = acompanhanteDatabaseGateway.save(acompanhante);
 
-    verify(acompanhanteRepository).save(acompanhanteEntity);
+    verify(acompanhanteRepository).save(any(AcompanhanteEntity.class));
     assertNotNull(retorno);
   }
 

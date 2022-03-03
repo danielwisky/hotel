@@ -6,6 +6,7 @@ import static org.apache.commons.collections4.CollectionUtils.emptyIfNull;
 
 import br.com.wiskyacademy.hotel.domains.Hospedagem;
 import br.com.wiskyacademy.hotel.domains.StatusHospedagem;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,13 +20,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "hospedagem")
-public class HospedagemEntity {
+public class HospedagemEntity implements Serializable {
+
+  private static final long serialVersionUID = -2789582521438839808L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
