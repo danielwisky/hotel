@@ -19,7 +19,7 @@ public class UpdateHospede {
 
     hospede.setId(hospedeDatabase.getId());
     hospede.getEndereco().setId(hospedeDatabase.getEndereco().getId());
-    
+
     return hospedeDatabaseGateway.save(hospede);
   }
 }

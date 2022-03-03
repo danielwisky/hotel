@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class HospedeController {
 
   private final HospedeDatabaseGateway hospedeDatabaseGateway;
-  
+
   private final UpdateHospede updateHospede;
 
   @PostMapping
