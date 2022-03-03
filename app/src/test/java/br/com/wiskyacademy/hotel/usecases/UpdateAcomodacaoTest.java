@@ -7,6 +7,7 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import br.com.wiskyacademy.hotel.UnitTest;
@@ -18,7 +19,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
 public class UpdateAcomodacaoTest extends UnitTest {
 
@@ -43,7 +43,7 @@ public class UpdateAcomodacaoTest extends UnitTest {
 
     updateAcomodacao.execute(acomodacao.getId(), acomodacaoComOutroNome);
 
-    Mockito.verify(acomodacaoDatabaseGateway).save(acomodacaoArgumentCaptor.capture());
+    verify(acomodacaoDatabaseGateway).save(acomodacaoArgumentCaptor.capture());
 
     final Acomodacao acomodacaoCapturada = acomodacaoArgumentCaptor.getValue();
     assertEquals(acomodacaoComOutroNome.getNome(), acomodacaoCapturada.getNome());
