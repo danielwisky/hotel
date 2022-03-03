@@ -19,21 +19,21 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class HospedeDatabaseGatewayImpl implements HospedeDatabaseGateway {
 
-  private final HospedeRepository repository;
+  private final HospedeRepository hospedeRepository;
 
   @Override
   public Hospede save(final Hospede hospede) {
-    return repository.save(new HospedeEntity(hospede)).toDomain();
+    return hospedeRepository.save(new HospedeEntity(hospede)).toDomain();
   }
 
   @Override
   public Optional<Hospede> findById(final Integer id) {
-    return repository.findById(id).map(HospedeEntity::toDomain);
+    return hospedeRepository.findById(id).map(HospedeEntity::toDomain);
   }
 
   @Override
   public Page<Hospede> search(final FiltroHospede filtro, final Pageable pageable) {
-    final Page<HospedeEntity> page = repository.findAll(toSpec(filtro), pageable);
+    final Page<HospedeEntity> page = hospedeRepository.findAll(toSpec(filtro), pageable);
     return new PageImpl<>(
         page.getContent().stream().map(HospedeEntity::toDomain).collect(toList()),
         page.getPageable(),

@@ -31,8 +31,8 @@ import br.com.wiskyacademy.hotel.gateways.AcomodacaoDatabaseGateway;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.AcomodacaoRequest;
 import br.com.wiskyacademy.hotel.gateways.outputs.mysql.repositories.AcomodacaoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
@@ -56,7 +56,7 @@ public class AcomodacaoControllerTest extends IntegrationTest {
 
   private MockMvc mockMVC;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     acomodacaoRepository.deleteAll();
     mockMVC = webAppContextSetup(webAppContext).build();
@@ -173,7 +173,8 @@ public class AcomodacaoControllerTest extends IntegrationTest {
   @Test
   public void devePesquisarUmaAcomodacaoPorNomeEDescricao() throws Exception {
 
-    acomodacaoDatabaseGateway.save(from(Acomodacao.class).gimme(VALIDO_OUTRO_NOME_E_DESCRICAO.name()));
+    acomodacaoDatabaseGateway.save(
+        from(Acomodacao.class).gimme(VALIDO_OUTRO_NOME_E_DESCRICAO.name()));
     final Acomodacao acomodacao =
         acomodacaoDatabaseGateway.save(from(Acomodacao.class).gimme(VALIDO_SEM_ID.name()));
 

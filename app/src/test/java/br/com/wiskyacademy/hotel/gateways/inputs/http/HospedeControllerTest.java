@@ -28,8 +28,8 @@ import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.Endereco
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.HospedeRequest;
 import br.com.wiskyacademy.hotel.gateways.outputs.mysql.repositories.HospedeRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
@@ -53,7 +53,7 @@ public class HospedeControllerTest extends IntegrationTest {
 
   private MockMvc mockMVC;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     hospedeRepository.deleteAll();
     mockMVC = webAppContextSetup(webAppContext).build();

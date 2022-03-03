@@ -3,6 +3,7 @@ package br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities;
 import static java.util.Optional.ofNullable;
 
 import br.com.wiskyacademy.hotel.domains.Acompanhante;
+import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,13 +13,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "acompanhante")
-public class AcompanhanteEntity {
+public class AcompanhanteEntity implements Serializable {
+
+  private static final long serialVersionUID = -7845960504921789067L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
