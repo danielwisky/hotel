@@ -1,19 +1,24 @@
 package br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities;
 
 import br.com.wiskyacademy.hotel.domains.Acomodacao;
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "acomodacao")
-public class AcomodacaoEntity {
+public class AcomodacaoEntity implements Serializable {
+
+  private static final long serialVersionUID = -7937000691165184582L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

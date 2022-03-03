@@ -1,8 +1,10 @@
 package br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities;
 
+import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 
 import br.com.wiskyacademy.hotel.domains.Hospede;
+import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,13 +13,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "hospede")
-public class HospedeEntity {
+public class HospedeEntity implements Serializable {
+
+  private static final long serialVersionUID = 7501541979913356718L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,6 +54,10 @@ public class HospedeEntity {
     this.email = hospede.getEmail();
     this.telefone = hospede.getTelefone();
     this.celular = hospede.getCelular();
+
+    if (nonNull(this.endereco)) {
+      this.endereco.setHospede(this);
+    }
   }
 
   public Hospede toDomain() {

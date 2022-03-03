@@ -5,7 +5,7 @@ import static br.com.wiskyacademy.hotel.templates.FixtureCoreTemplates.VALIDO;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
-import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.AcomodacaoRequest;
+import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.AcomodacaoRequest;
 
 public class AcomodacaoRequestTemplateLoader implements TemplateLoader {
 

@@ -1,26 +1,18 @@
 package br.com.wiskyacademy.hotel;
 
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
-import br.com.wiskyacademy.hotel.containers.MySQLContainerConfiguration;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = {HotelApplication.class}, webEnvironment = RANDOM_PORT)
+@SpringBootTest
 @ActiveProfiles("test")
+@ExtendWith(SpringExtension.class)
 public abstract class IntegrationTest {
 
-  @ClassRule
-  public static MySQLContainerConfiguration mySQLContainerConfiguration =
-      MySQLContainerConfiguration.getInstance();
-
-  @BeforeClass
+  @BeforeAll
   public static synchronized void setup() {
     FixtureFactoryLoader.loadTemplates("br.com.wiskyacademy.hotel.templates");
   }

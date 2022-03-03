@@ -14,8 +14,8 @@ public class UpdateAcomodacao {
 
   public Acomodacao execute(final Integer id, final Acomodacao acomodacao) {
 
-    final Acomodacao acomodacaoDatabase =
-        acomodacaoDatabaseGateway.findById(id).orElseThrow(ResourceNotFoundException::new);
+    final Acomodacao acomodacaoDatabase = acomodacaoDatabaseGateway.findById(id)
+        .orElseThrow(ResourceNotFoundException::new);
 
     acomodacaoDatabase.setNome(acomodacao.getNome());
     acomodacaoDatabase.setDescricao(acomodacao.getDescricao());
