@@ -2,7 +2,6 @@ package br.com.wiskyacademy.hotel.usecases;
 
 import static br.com.six2six.fixturefactory.Fixture.from;
 import static br.com.wiskyacademy.hotel.templates.FixtureCoreTemplates.VALIDO;
-import static br.com.wiskyacademy.hotel.templates.FixtureCoreTemplates.VALIDO_OUTRO_NOME_E_DESCRICAO;
 import static br.com.wiskyacademy.hotel.templates.FixtureCoreTemplates.VALIDO_OUTRO_NOME_E_DOCUMENTO;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;

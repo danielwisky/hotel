@@ -12,15 +12,15 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class HospedagemDatabaseGatewayImpl implements HospedagemDatabaseGateway {
 
-  private final HospedagemRepository repository;
+  private final HospedagemRepository hospedagemRepository;
 
   @Override
   public Hospedagem save(final Hospedagem hospedagem) {
-    return repository.save(new HospedagemEntity(hospedagem)).toDomain();
+    return hospedagemRepository.save(new HospedagemEntity(hospedagem)).toDomain();
   }
 
   @Override
   public Optional<Hospedagem> findById(final Integer id) {
-    return repository.findById(id).map(HospedagemEntity::toDomain);
+    return hospedagemRepository.findById(id).map(HospedagemEntity::toDomain);
   }
 }
