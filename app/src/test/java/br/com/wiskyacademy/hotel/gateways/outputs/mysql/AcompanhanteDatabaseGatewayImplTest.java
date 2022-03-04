@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.wiskyacademy.hotel.UnitTest;
 import br.com.wiskyacademy.hotel.domains.Acompanhante;
+import br.com.wiskyacademy.hotel.domains.Hospede;
 import br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.AcompanhanteEntity;
 import br.com.wiskyacademy.hotel.gateways.outputs.mysql.repositories.AcompanhanteRepository;
 import java.util.Optional;
@@ -42,11 +43,13 @@ class AcompanhanteDatabaseGatewayImplTest extends UnitTest {
   void aoBuscarPorIdDeveRetornarAcompanhante() {
 
     final Acompanhante acompanhante = Fixture.from(Acompanhante.class).gimme(VALIDO.name());
-    when(acompanhanteRepository.findById(acompanhante.getId()))
+    final Hospede hospede = acompanhante.getHospede();
+
+    when(acompanhanteRepository.findByHospedeIdAndId(hospede.getId(), acompanhante.getId()))
         .thenReturn(Optional.of(new AcompanhanteEntity(acompanhante)));
 
-    final Optional<Acompanhante> retorno =
-        acompanhanteDatabaseGateway.findById(acompanhante.getId());
+    final Optional<Acompanhante> retorno = acompanhanteDatabaseGateway.findByHospedeIdAndAcompanhanteId(
+        hospede.getId(), acompanhante.getId());
 
     assertFalse(retorno.isEmpty());
   }
@@ -55,11 +58,13 @@ class AcompanhanteDatabaseGatewayImplTest extends UnitTest {
   void aoBuscarPorIdDeveRetornarVazioQuandoNaoEncontrado() {
 
     final Acompanhante acompanhante = Fixture.from(Acompanhante.class).gimme(VALIDO.name());
-    when(acompanhanteRepository.findById(acompanhante.getId()))
+    final Hospede hospede = acompanhante.getHospede();
+
+    when(acompanhanteRepository.findByHospedeIdAndId(hospede.getId(), acompanhante.getId()))
         .thenReturn(Optional.empty());
 
-    final Optional<Acompanhante> retorno =
-        acompanhanteDatabaseGateway.findById(acompanhante.getId());
+    final Optional<Acompanhante> retorno = acompanhanteDatabaseGateway.findByHospedeIdAndAcompanhanteId(
+        hospede.getId(), acompanhante.getId());
 
     assertTrue(retorno.isEmpty());
   }

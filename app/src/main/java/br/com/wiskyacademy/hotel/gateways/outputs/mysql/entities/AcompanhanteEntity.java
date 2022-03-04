@@ -34,7 +34,7 @@ public class AcompanhanteEntity implements Serializable {
   private String documento;
   @Column(nullable = false, name = "dt_nascimento")
   private LocalDate dataNascimento;
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne(cascade = CascadeType.MERGE)
   @JoinColumn(name = "hospede_id", nullable = false)
   private HospedeEntity hospede;
 
