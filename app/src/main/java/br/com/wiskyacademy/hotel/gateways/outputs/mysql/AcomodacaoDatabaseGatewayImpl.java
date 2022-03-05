@@ -19,21 +19,21 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AcomodacaoDatabaseGatewayImpl implements AcomodacaoDatabaseGateway {
 
-  private final AcomodacaoRepository repository;
+  private final AcomodacaoRepository acomodacaoRepository;
 
   @Override
   public Acomodacao save(final Acomodacao acomodacao) {
-    return repository.save(new AcomodacaoEntity(acomodacao)).toDomain();
+    return acomodacaoRepository.save(new AcomodacaoEntity(acomodacao)).toDomain();
   }
 
   @Override
   public Optional<Acomodacao> findById(final Integer id) {
-    return repository.findById(id).map(AcomodacaoEntity::toDomain);
+    return acomodacaoRepository.findById(id).map(AcomodacaoEntity::toDomain);
   }
 
   @Override
   public Page<Acomodacao> search(final FiltroAcomodacao filtro, final Pageable pageable) {
-    final Page<AcomodacaoEntity> page = repository.findAll(toSpec(filtro), pageable);
+    final Page<AcomodacaoEntity> page = acomodacaoRepository.findAll(toSpec(filtro), pageable);
     return new PageImpl<>(
         page.getContent().stream().map(AcomodacaoEntity::toDomain).collect(toList()),
         page.getPageable(),

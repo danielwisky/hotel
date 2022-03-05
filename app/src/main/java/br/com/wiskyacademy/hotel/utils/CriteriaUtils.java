@@ -73,4 +73,15 @@ public class CriteriaUtils {
     }
   }
 
+  public static void addEqualConditionIfNotNull(
+      final CriteriaBuilder builder,
+      final List<Predicate> predicates,
+      final Integer value,
+      final Path<String> field) {
+
+    if (nonNull(value)) {
+      final Predicate like = builder.equal(field, value);
+      predicates.add(like);
+    }
+  }
 }
