@@ -22,7 +22,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 import br.com.wiskyacademy.hotel.IntegrationTest;
 import br.com.wiskyacademy.hotel.domains.Acompanhante;
-import br.com.wiskyacademy.hotel.domains.Endereco;
 import br.com.wiskyacademy.hotel.domains.Hospede;
 import br.com.wiskyacademy.hotel.gateways.AcompanhanteDatabaseGateway;
 import br.com.wiskyacademy.hotel.gateways.HospedeDatabaseGateway;
