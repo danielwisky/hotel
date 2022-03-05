@@ -115,4 +115,22 @@ public class CriteriaUtilsTest extends UnitTest {
 
     assertEquals(INTEGER_ZERO, predicates.size());
   }
+
+  @Test
+  public void deveAdicionarIgualQuandoValorNaoForNulo() {
+    final List<Predicate> predicates = new ArrayList<>();
+    final Integer valor = 1;
+    CriteriaUtils.addEqualConditionIfNotNull(criteriaBuilder, predicates, valor, null);
+
+    assertEquals(INTEGER_ONE, predicates.size());
+  }
+
+  @Test
+  public void naoDeveAdicionarIgualQuandoValorNulo() {
+    final List<Predicate> predicates = new ArrayList<>();
+    final Integer valor = null;
+    CriteriaUtils.addEqualConditionIfNotNull(criteriaBuilder, predicates, valor, null);
+
+    assertEquals(INTEGER_ZERO, predicates.size());
+  }
 }
