@@ -12,15 +12,15 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class EnderecoDatabaseGatewayImpl implements EnderecoDatabaseGateway {
 
-  private final EnderecoRepository repository;
+  private final EnderecoRepository enderecoRepository;
 
   @Override
   public Endereco save(final Endereco endereco) {
-    return repository.save(new EnderecoEntity(endereco)).toDomain();
+    return enderecoRepository.save(new EnderecoEntity(endereco)).toDomain();
   }
 
   @Override
   public Optional<Endereco> findById(final Integer id) {
-    return repository.findById(id).map(EnderecoEntity::toDomain);
+    return enderecoRepository.findById(id).map(EnderecoEntity::toDomain);
   }
 }
