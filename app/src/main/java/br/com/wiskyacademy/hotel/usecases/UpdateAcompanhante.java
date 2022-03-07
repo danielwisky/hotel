@@ -3,7 +3,6 @@ package br.com.wiskyacademy.hotel.usecases;
 import br.com.wiskyacademy.hotel.domains.Acompanhante;
 import br.com.wiskyacademy.hotel.domains.exceptions.ResourceNotFoundException;
 import br.com.wiskyacademy.hotel.gateways.AcompanhanteDatabaseGateway;
-import br.com.wiskyacademy.hotel.gateways.HospedeDatabaseGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class UpdateAcompanhante {
 
-  private final HospedeDatabaseGateway hospedeDatabaseGateway;
   private final AcompanhanteDatabaseGateway acompanhanteDatabaseGateway;
 
   public Acompanhante execute(
