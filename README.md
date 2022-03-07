@@ -21,4 +21,4 @@ O Sistema de Gestão de Hospedagem será utilizado na ministração de um curso 
 
 ## Modelo de dados:
 
-![hotel](https://user-images.githubusercontent.com/2626931/149970891-deeb4b23-c4d9-4aee-98b3-37170ad044ae.png)
+![hotel](https://user-images.githubusercontent.com/2626931/157117510-9ba6ca51-bac4-42fd-8779-65f8e6615b0f.png)
