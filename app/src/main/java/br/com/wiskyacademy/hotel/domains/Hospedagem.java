@@ -24,4 +24,5 @@ public class Hospedagem {
   private LocalDateTime dataCheckIn;
   private LocalDateTime dataCheckOut;
   private StatusHospedagem status;
+  private LocalDateTime dataAtualizacao;
 }

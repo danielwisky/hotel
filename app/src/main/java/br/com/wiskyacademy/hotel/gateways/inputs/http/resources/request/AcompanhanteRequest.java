@@ -1,5 +1,7 @@
 package br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request;
 
+import static java.time.LocalDateTime.now;
+
 import br.com.wiskyacademy.hotel.domains.Acompanhante;
 import java.time.LocalDate;
 import javax.validation.constraints.NotBlank;
@@ -19,6 +21,7 @@ public class AcompanhanteRequest {
         .nome(this.nome)
         .documento(this.documento)
         .dataNascimento(this.dataNascimento)
+        .dataAtualizacao(now())
         .build();
   }
 }

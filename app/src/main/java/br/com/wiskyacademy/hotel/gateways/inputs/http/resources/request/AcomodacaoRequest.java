@@ -1,5 +1,7 @@
 package br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request;
 
+import static java.time.LocalDateTime.now;
+
 import br.com.wiskyacademy.hotel.domains.Acomodacao;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -22,6 +24,7 @@ public class AcomodacaoRequest {
         .descricao(this.descricao)
         .capacidade(this.capacidade)
         .preco(this.preco)
+        .dataAtualizacao(now())
         .build();
   }
 }

@@ -2,6 +2,7 @@ package br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities;
 
 import br.com.wiskyacademy.hotel.domains.Acomodacao;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,6 +32,9 @@ public class AcomodacaoEntity implements Serializable {
   private Integer capacidade;
   @Column(nullable = false)
   private Float preco;
+  private Boolean ativo;
+  @Column(name = "dt_atualizacao")
+  private LocalDateTime dataAtualizacao;
 
   public AcomodacaoEntity(final Acomodacao acomodacao) {
     this.id = acomodacao.getId();
@@ -38,6 +42,8 @@ public class AcomodacaoEntity implements Serializable {
     this.descricao = acomodacao.getDescricao();
     this.capacidade = acomodacao.getCapacidade();
     this.preco = acomodacao.getPreco();
+    this.ativo = acomodacao.getAtivo();
+    this.dataAtualizacao = acomodacao.getDataAtualizacao();
   }
 
   public Acomodacao toDomain() {
@@ -47,6 +53,8 @@ public class AcomodacaoEntity implements Serializable {
         .descricao(this.descricao)
         .capacidade(this.capacidade)
         .preco(this.preco)
+        .ativo(this.ativo)
+        .dataAtualizacao(this.dataAtualizacao)
         .build();
   }
 }

@@ -2,6 +2,7 @@ package br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response;
 
 import br.com.wiskyacademy.hotel.domains.Hospede;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import lombok.Data;
 
@@ -16,6 +17,8 @@ public class HospedeResponse {
   private String telefone;
   private String celular;
   private EnderecoResponse endereco;
+  private Boolean ativo;
+  private LocalDateTime dataAtualizacao;
 
   public HospedeResponse(final Hospede hospede) {
     this.id = hospede.getId();
@@ -28,5 +31,7 @@ public class HospedeResponse {
     this.endereco = Optional.ofNullable(hospede.getEndereco())
         .map(EnderecoResponse::new)
         .orElse(null);
+    this.ativo = hospede.getAtivo();
+    this.dataAtualizacao = hospede.getDataAtualizacao();
   }
 }

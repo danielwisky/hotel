@@ -1,8 +1,10 @@
 package br.com.wiskyacademy.hotel.domains;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,4 +22,7 @@ public class Hospede {
   private String email;
   private String telefone;
   private String celular;
+  @Default
+  private Boolean ativo = Boolean.TRUE;
+  private LocalDateTime dataAtualizacao;
 }

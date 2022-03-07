@@ -6,6 +6,7 @@ import static java.util.Optional.ofNullable;
 import br.com.wiskyacademy.hotel.domains.Hospede;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,6 +43,9 @@ public class HospedeEntity implements Serializable {
   private String telefone;
   @Column(nullable = false, length = 20)
   private String celular;
+  private Boolean ativo;
+  @Column(name = "dt_atualizacao")
+  private LocalDateTime dataAtualizacao;
 
   public HospedeEntity(final Hospede hospede) {
     this.id = hospede.getId();
@@ -54,6 +58,8 @@ public class HospedeEntity implements Serializable {
     this.email = hospede.getEmail();
     this.telefone = hospede.getTelefone();
     this.celular = hospede.getCelular();
+    this.ativo = hospede.getAtivo();
+    this.dataAtualizacao = hospede.getDataAtualizacao();
 
     if (nonNull(this.endereco)) {
       this.endereco.setHospede(this);
@@ -72,6 +78,8 @@ public class HospedeEntity implements Serializable {
         .email(this.email)
         .telefone(this.telefone)
         .celular(this.celular)
+        .ativo(this.ativo)
+        .dataAtualizacao(this.dataAtualizacao)
         .build();
   }
 }

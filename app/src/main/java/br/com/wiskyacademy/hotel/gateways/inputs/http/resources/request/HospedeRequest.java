@@ -1,5 +1,7 @@
 package br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request;
 
+import static java.time.LocalDateTime.now;
+
 import br.com.wiskyacademy.hotel.domains.Hospede;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -37,6 +39,7 @@ public class HospedeRequest {
         .endereco(Optional.ofNullable(this.endereco)
             .map(EnderecoRequest::toDomain)
             .orElse(null))
+        .dataAtualizacao(now())
         .build();
   }
 }

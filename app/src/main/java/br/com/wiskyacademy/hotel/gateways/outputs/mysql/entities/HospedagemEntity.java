@@ -55,6 +55,8 @@ public class HospedagemEntity implements Serializable {
   @Column(name = "dt_check_out")
   private LocalDateTime dataCheckOut;
   private String status;
+  @Column(name = "dt_atualizacao")
+  private LocalDateTime dataAtualizacao;
 
   public HospedagemEntity(final Hospedagem hospedagem) {
     this.id = hospedagem.getId();
@@ -76,6 +78,7 @@ public class HospedagemEntity implements Serializable {
     this.status = ofNullable(hospedagem.getStatus())
         .map(Enum::name)
         .orElse(null);
+    this.dataAtualizacao = hospedagem.getDataAtualizacao();
   }
 
   public Hospedagem toDomain() {
@@ -99,6 +102,7 @@ public class HospedagemEntity implements Serializable {
         .status(ofNullable(this.status)
             .map(StatusHospedagem::valueOf)
             .orElse(null))
+        .dataAtualizacao(this.dataAtualizacao)
         .build();
   }
 }
