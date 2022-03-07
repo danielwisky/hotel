@@ -71,9 +71,9 @@ public class AcompanhanteController {
       @PathVariable final Integer acompanhanteId) {
     return ResponseEntity.ok(
         acompanhanteDatabaseGateway
-        .findByHospedeIdAndAcompanhanteId(hospedeId, acompanhanteId)
-        .map(AcompanhanteResponse::new)
-        .orElseThrow(ResourceNotFoundException::new));
+            .findByHospedeIdAndAcompanhanteId(hospedeId, acompanhanteId)
+            .map(AcompanhanteResponse::new)
+            .orElseThrow(ResourceNotFoundException::new));
   }
 
   @GetMapping
