@@ -26,8 +26,6 @@ import br.com.wiskyacademy.hotel.domains.Hospede;
 import br.com.wiskyacademy.hotel.gateways.AcompanhanteDatabaseGateway;
 import br.com.wiskyacademy.hotel.gateways.HospedeDatabaseGateway;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.AcompanhanteRequest;
-import br.com.wiskyacademy.hotel.gateways.outputs.mysql.repositories.AcompanhanteRepository;
-import br.com.wiskyacademy.hotel.gateways.outputs.mysql.repositories.HospedeRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,12 +42,6 @@ public class AcompanhanteControllerTest extends IntegrationTest {
   private WebApplicationContext webAppContext;
 
   @Autowired
-  private HospedeRepository hospedeRepository;
-
-  @Autowired
-  private AcompanhanteRepository acompanhanteRepository;
-
-  @Autowired
   private HospedeDatabaseGateway hospedeDatabaseGateway;
 
   @Autowired
@@ -62,8 +54,6 @@ public class AcompanhanteControllerTest extends IntegrationTest {
 
   @BeforeEach
   public void setUp() {
-    acompanhanteRepository.deleteAll();
-    hospedeRepository.deleteAll();
     mockMVC = webAppContextSetup(webAppContext).build();
   }
 

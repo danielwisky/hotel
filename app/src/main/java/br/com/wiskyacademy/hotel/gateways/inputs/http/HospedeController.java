@@ -3,7 +3,7 @@ package br.com.wiskyacademy.hotel.gateways.inputs.http;
 import static br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.AcomodacaoEntity_.ID;
 import static java.util.stream.Collectors.toList;
 import static org.springframework.data.domain.PageRequest.of;
-import static org.springframework.data.domain.Sort.Direction.ASC;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.http.HttpStatus.OK;
 
 import br.com.wiskyacademy.hotel.domains.Hospede;
@@ -78,7 +78,7 @@ public class HospedeController {
       @RequestParam(defaultValue = "0") final Integer pagina,
       @RequestParam(defaultValue = "20") final Integer tamanho) {
     final Page<Hospede> resultado =
-        hospedeDatabaseGateway.search(filtro.toDomain(), of(pagina, tamanho, ASC, ID));
+        hospedeDatabaseGateway.search(filtro.toDomain(), of(pagina, tamanho, DESC, ID));
 
     return ResponseEntity.ok(new PageResponse<>(
         resultado.getContent().stream().map(HospedeResponse::new).collect(toList()),

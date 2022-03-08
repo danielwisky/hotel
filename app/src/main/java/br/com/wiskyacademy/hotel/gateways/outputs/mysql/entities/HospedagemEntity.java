@@ -35,13 +35,13 @@ public class HospedagemEntity implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
   @JoinColumn(name = "acomodacao_id", nullable = false)
   private AcomodacaoEntity acomodacao;
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
   @JoinColumn(name = "hospede_id", nullable = false)
   private HospedeEntity hospede;
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
   @JoinTable(name = "acompanhante_hospedagem", joinColumns = @JoinColumn(name = "hospedagem_id"), inverseJoinColumns = @JoinColumn(name = "acompanhante_id"))
   private List<AcompanhanteEntity> acompanhantes;
   @Column(nullable = false)

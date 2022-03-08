@@ -9,6 +9,4 @@ public interface HospedeRepository extends
     JpaSpecificationExecutor<HospedeEntity> {
 
   boolean existsByEmail(String email);
-
-  boolean existsByEmailAndIdNot(String email, Integer id);
 }

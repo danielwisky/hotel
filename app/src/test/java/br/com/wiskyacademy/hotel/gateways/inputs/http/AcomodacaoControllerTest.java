@@ -29,7 +29,6 @@ import br.com.wiskyacademy.hotel.IntegrationTest;
 import br.com.wiskyacademy.hotel.domains.Acomodacao;
 import br.com.wiskyacademy.hotel.gateways.AcomodacaoDatabaseGateway;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.AcomodacaoRequest;
-import br.com.wiskyacademy.hotel.gateways.outputs.mysql.repositories.AcomodacaoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,9 +45,6 @@ public class AcomodacaoControllerTest extends IntegrationTest {
   private WebApplicationContext webAppContext;
 
   @Autowired
-  private AcomodacaoRepository acomodacaoRepository;
-
-  @Autowired
   private AcomodacaoDatabaseGateway acomodacaoDatabaseGateway;
 
   @Autowired
@@ -58,7 +54,6 @@ public class AcomodacaoControllerTest extends IntegrationTest {
 
   @BeforeEach
   public void setUp() {
-    acomodacaoRepository.deleteAll();
     mockMVC = webAppContextSetup(webAppContext).build();
   }
 

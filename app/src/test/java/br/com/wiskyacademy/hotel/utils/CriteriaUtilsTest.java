@@ -5,6 +5,8 @@ import static org.apache.commons.lang3.math.NumberUtils.INTEGER_ZERO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import br.com.wiskyacademy.hotel.UnitTest;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -132,5 +134,77 @@ public class CriteriaUtilsTest extends UnitTest {
     CriteriaUtils.addEqualConditionIfNotNull(criteriaBuilder, predicates, valor, null);
 
     assertEquals(INTEGER_ZERO, predicates.size());
+  }
+
+  @Test
+  public void naoDeveAdicionarMenorOuIgualQuandoValorLocalDateForNulo() {
+    final List<Predicate> predicates = new ArrayList<>();
+    final LocalDate valor = null;
+    CriteriaUtils.addLessThanOrEqualToIfNotNull(criteriaBuilder, predicates, valor, null);
+
+    assertEquals(INTEGER_ZERO, predicates.size());
+  }
+
+  @Test
+  public void deveAdicionarMenorOuIgualQuandoValorLocalDateNaoForNulo() {
+    final List<Predicate> predicates = new ArrayList<>();
+    final LocalDate valor = LocalDate.now();
+    CriteriaUtils.addLessThanOrEqualToIfNotNull(criteriaBuilder, predicates, valor, null);
+
+    assertEquals(INTEGER_ONE, predicates.size());
+  }
+
+  @Test
+  public void naoDeveAdicionarMenorOuIgualQuandoValorLocalDateTimeForNulo() {
+    final List<Predicate> predicates = new ArrayList<>();
+    final LocalDateTime valor = null;
+    CriteriaUtils.addLessThanOrEqualToIfNotNull(criteriaBuilder, predicates, valor, null);
+
+    assertEquals(INTEGER_ZERO, predicates.size());
+  }
+
+  @Test
+  public void deveAdicionarMenorOuIgualQuandoValorLocalDateTimeNaoForNulo() {
+    final List<Predicate> predicates = new ArrayList<>();
+    final LocalDateTime valor = LocalDateTime.now();
+    CriteriaUtils.addLessThanOrEqualToIfNotNull(criteriaBuilder, predicates, valor, null);
+
+    assertEquals(INTEGER_ONE, predicates.size());
+  }
+
+  @Test
+  public void naoDeveAdicionarMaiorOuIgualQuandoValorLocalDateForNulo() {
+    final List<Predicate> predicates = new ArrayList<>();
+    final LocalDate valor = null;
+    CriteriaUtils.addGreaterThanOrEqualToIfNotNull(criteriaBuilder, predicates, valor, null);
+
+    assertEquals(INTEGER_ZERO, predicates.size());
+  }
+
+  @Test
+  public void deveAdicionarMaiorOuIgualQuandoValorLocalDateNaoForNulo() {
+    final List<Predicate> predicates = new ArrayList<>();
+    final LocalDate valor = LocalDate.now();
+    CriteriaUtils.addGreaterThanOrEqualToIfNotNull(criteriaBuilder, predicates, valor, null);
+
+    assertEquals(INTEGER_ONE, predicates.size());
+  }
+
+  @Test
+  public void naoDeveAdicionarMaiorOuIgualQuandoValorLocalDateTimeForNulo() {
+    final List<Predicate> predicates = new ArrayList<>();
+    final LocalDateTime valor = null;
+    CriteriaUtils.addGreaterThanOrEqualToIfNotNull(criteriaBuilder, predicates, valor, null);
+
+    assertEquals(INTEGER_ZERO, predicates.size());
+  }
+
+  @Test
+  public void deveAdicionarMaiorOuIgualQuandoValorLocalDateTimeNaoForNulo() {
+    final List<Predicate> predicates = new ArrayList<>();
+    final LocalDateTime valor = LocalDateTime.now();
+    CriteriaUtils.addGreaterThanOrEqualToIfNotNull(criteriaBuilder, predicates, valor, null);
+
+    assertEquals(INTEGER_ONE, predicates.size());
   }
 }
