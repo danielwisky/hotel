@@ -1,9 +1,6 @@
 package br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request;
 
-import static java.util.Optional.ofNullable;
-
 import br.com.wiskyacademy.hotel.domains.FiltroHospedagem;
-import br.com.wiskyacademy.hotel.domains.StatusHospedagem;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.Data;
