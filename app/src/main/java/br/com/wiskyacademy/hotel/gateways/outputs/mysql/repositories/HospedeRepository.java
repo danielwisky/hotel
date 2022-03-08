@@ -8,4 +8,7 @@ public interface HospedeRepository extends
     CrudRepository<HospedeEntity, Integer>,
     JpaSpecificationExecutor<HospedeEntity> {
 
+  boolean existsByEmail(String email);
+
+  boolean existsByEmailAndIdNot(String email, Integer id);
 }

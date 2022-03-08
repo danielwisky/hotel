@@ -39,4 +39,9 @@ public class HospedeDatabaseGatewayImpl implements HospedeDatabaseGateway {
         page.getPageable(),
         page.getTotalElements());
   }
+
+  @Override
+  public boolean existsByEmail(final String email) {
+    return hospedeRepository.existsByEmail(email);
+  }
 }

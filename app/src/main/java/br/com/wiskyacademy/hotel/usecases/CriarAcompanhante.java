@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class CreateAcompanhante {
+public class CriarAcompanhante {
 
   private final HospedeDatabaseGateway hospedeDatabaseGateway;
   private final AcompanhanteDatabaseGateway acompanhanteDatabaseGateway;
 
-  public Acompanhante execute(final Integer hospedeId, final Acompanhante acompanhante) {
+  public Acompanhante executar(final Integer hospedeId, final Acompanhante acompanhante) {
 
     final Hospede hospedeDatabase = hospedeDatabaseGateway.findById(hospedeId)
         .orElseThrow(ResourceNotFoundException::new);

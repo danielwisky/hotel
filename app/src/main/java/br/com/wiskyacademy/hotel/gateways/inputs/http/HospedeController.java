@@ -13,7 +13,8 @@ import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.FiltroHo
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.HospedeRequest;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response.HospedeResponse;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response.PageResponse;
-import br.com.wiskyacademy.hotel.usecases.UpdateHospede;
+import br.com.wiskyacademy.hotel.usecases.AlterarHospede;
+import br.com.wiskyacademy.hotel.usecases.CriarHospede;
 import io.swagger.annotations.ApiOperation;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,8 +36,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class HospedeController {
 
   private final HospedeDatabaseGateway hospedeDatabaseGateway;
-
-  private final UpdateHospede updateHospede;
+  private final CriarHospede criarHospede;
+  private final AlterarHospede alterarHospede;
 
   @PostMapping
   @ResponseStatus(OK)
@@ -45,7 +46,7 @@ public class HospedeController {
       @RequestBody @Valid final HospedeRequest hospedeRequest) {
 
     return ResponseEntity.ok(
-        new HospedeResponse(hospedeDatabaseGateway.save(hospedeRequest.toDomain())));
+        new HospedeResponse(criarHospede.executar(hospedeRequest.toDomain())));
   }
 
   @PutMapping("/{id}")
@@ -56,7 +57,7 @@ public class HospedeController {
       @RequestBody @Valid final HospedeRequest hospedeRequest) {
 
     return ResponseEntity.ok(
-        new HospedeResponse(updateHospede.execute(id, hospedeRequest.toDomain())));
+        new HospedeResponse(alterarHospede.executar(id, hospedeRequest.toDomain())));
   }
 
   @GetMapping("/{id}")

@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UpdateAcompanhante {
+public class AlterarAcompanhante {
 
   private final AcompanhanteDatabaseGateway acompanhanteDatabaseGateway;
 
-  public Acompanhante execute(
+  public Acompanhante executar(
       final Integer hospedeId,
       final Integer acompanhanteId,
       final Acompanhante acompanhante) {

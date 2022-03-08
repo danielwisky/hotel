@@ -2,10 +2,10 @@ package br.com.wiskyacademy.hotel.usecases;
 
 import static br.com.six2six.fixturefactory.Fixture.from;
 import static br.com.wiskyacademy.hotel.templates.FixtureCoreTemplates.VALIDO;
-import static br.com.wiskyacademy.hotel.templates.FixtureCoreTemplates.VALIDO_OUTRO_NOME_E_DOCUMENTO;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -15,16 +15,20 @@ import br.com.wiskyacademy.hotel.domains.Acompanhante;
 import br.com.wiskyacademy.hotel.domains.Hospede;
 import br.com.wiskyacademy.hotel.domains.exceptions.ResourceNotFoundException;
 import br.com.wiskyacademy.hotel.gateways.AcompanhanteDatabaseGateway;
+import br.com.wiskyacademy.hotel.gateways.HospedeDatabaseGateway;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-public class UpdateAcompanhanteTest extends UnitTest {
+public class CriarAcompanhanteTest extends UnitTest {
 
   @InjectMocks
-  private UpdateAcompanhante updateAcompanhante;
+  private CriarAcompanhante criarAcompanhante;
+
+  @Mock
+  private HospedeDatabaseGateway hospedeDatabaseGateway;
 
   @Mock
   private AcompanhanteDatabaseGateway acompanhanteDatabaseGateway;
@@ -36,33 +40,27 @@ public class UpdateAcompanhanteTest extends UnitTest {
   void deveExecutar() {
 
     final Acompanhante acompanhante = from(Acompanhante.class).gimme(VALIDO.name());
-    final Acompanhante acompanhanteComOutroNome =
-        from(Acompanhante.class).gimme(VALIDO_OUTRO_NOME_E_DOCUMENTO.name());
     final Hospede hospede = acompanhante.getHospede();
 
-    when(acompanhanteDatabaseGateway
-        .findByHospedeIdAndAcompanhanteId(hospede.getId(), acompanhante.getId()))
-        .thenReturn(of(acompanhante));
+    when(hospedeDatabaseGateway.findById(hospede.getId())).thenReturn(of(hospede));
 
-    updateAcompanhante.execute(hospede.getId(), acompanhante.getId(), acompanhanteComOutroNome);
+    criarAcompanhante.executar(hospede.getId(), acompanhante);
 
     verify(acompanhanteDatabaseGateway).save(acompanhanteArgumentCaptor.capture());
 
     final Acompanhante acompanhanteCapturado = acompanhanteArgumentCaptor.getValue();
-    assertEquals(acompanhanteComOutroNome.getNome(), acompanhanteCapturado.getNome());
-    assertEquals(acompanhanteComOutroNome.getDocumento(), acompanhanteCapturado.getDocumento());
+    assertNotNull(acompanhanteCapturado);
+    assertEquals(acompanhante.getHospede(), acompanhanteCapturado.getHospede());
   }
 
   @Test
-  void deveLancarExceptionResourceNotFoundQuandoNaoExistirAcompanhante() {
+  void deveLancarExceptionResourceNotFoundQuandoNaoExistirHospede() {
     final Acompanhante acompanhante = from(Acompanhante.class).gimme(VALIDO.name());
     final Hospede hospede = acompanhante.getHospede();
 
-    when(acompanhanteDatabaseGateway
-        .findByHospedeIdAndAcompanhanteId(hospede.getId(), acompanhante.getId()))
-        .thenReturn(empty());
+    when(hospedeDatabaseGateway.findById(hospede.getId())).thenReturn(empty());
 
     assertThrows(ResourceNotFoundException.class,
-        () -> updateAcompanhante.execute(hospede.getId(), acompanhante.getId(), acompanhante));
+        () -> criarAcompanhante.executar(hospede.getId(), acompanhante));
   }
 }

@@ -20,10 +20,10 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-public class UpdateAcomodacaoTest extends UnitTest {
+public class AlterarAcomodacaoTest extends UnitTest {
 
   @InjectMocks
-  private UpdateAcomodacao updateAcomodacao;
+  private AlterarAcomodacao alterarAcomodacao;
 
   @Mock
   private AcomodacaoDatabaseGateway acomodacaoDatabaseGateway;
@@ -41,7 +41,7 @@ public class UpdateAcomodacaoTest extends UnitTest {
     when(acomodacaoDatabaseGateway.findById(acomodacao.getId()))
         .thenReturn(of(acomodacao));
 
-    updateAcomodacao.execute(acomodacao.getId(), acomodacaoComOutroNome);
+    alterarAcomodacao.executar(acomodacao.getId(), acomodacaoComOutroNome);
 
     verify(acomodacaoDatabaseGateway).save(acomodacaoArgumentCaptor.capture());
 
@@ -59,6 +59,6 @@ public class UpdateAcomodacaoTest extends UnitTest {
     when(acomodacaoDatabaseGateway.findById(acomodacao.getId())).thenReturn(empty());
 
     assertThrows(ResourceNotFoundException.class,
-        () -> updateAcomodacao.execute(acomodacao.getId(), acomodacao));
+        () -> alterarAcomodacao.executar(acomodacao.getId(), acomodacao));
   }
 }

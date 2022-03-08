@@ -103,6 +103,23 @@ public class HospedeControllerTest extends IntegrationTest {
   }
 
   @Test
+  public void aoCriarUmHospedeDeveValidarEmailJaCadastrado() throws Exception {
+    final Hospede hospede =
+        hospedeDatabaseGateway.save(from(Hospede.class).gimme(VALIDO_SEM_ID.name()));
+    final HospedeRequest hospedeRequest = from(HospedeRequest.class).gimme(VALIDO.name());
+    hospedeRequest.setEmail(hospede.getEmail());
+
+    mockMVC
+        .perform(post(URL)
+            .contentType(APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(hospedeRequest)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.erros", hasSize(1)))
+        .andExpect(jsonPath("$.erros",
+            hasItems(String.format("email %s já cadastrado.", hospedeRequest.getEmail()))));
+  }
+
+  @Test
   public void deveEditarUmHospede() throws Exception {
     final HospedeRequest hospedeRequest = from(HospedeRequest.class).gimme(VALIDO.name());
     final EnderecoRequest enderecoRequest = hospedeRequest.getEndereco();
@@ -133,6 +150,25 @@ public class HospedeControllerTest extends IntegrationTest {
 
   @Test
   public void aoEditarUmHospedeDeveValidarCamposObrigatorios() throws Exception {
+    final HospedeRequest hospedeRequest = from(HospedeRequest.class).gimme(VALIDO.name());
+    final Hospede hospede =
+        hospedeDatabaseGateway.save(from(Hospede.class).gimme(VALIDO_SEM_ID.name()));
+    final Hospede hospedeComOutroNomeEDocumento =
+        hospedeDatabaseGateway.save(from(Hospede.class).gimme(VALIDO_OUTRO_NOME_E_DOCUMENTO.name()));
+    hospedeRequest.setEmail(hospedeComOutroNomeEDocumento.getEmail());
+
+    mockMVC
+        .perform(put(format(URL_WITH_PARAM, hospede.getId()))
+            .contentType(APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(hospedeRequest)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.erros", hasSize(1)))
+        .andExpect(jsonPath("$.erros",
+            hasItems(String.format("email %s já cadastrado.", hospedeRequest.getEmail()))));
+  }
+
+  @Test
+  public void aoEditarUmHospedeNaoDevePermitirAlterarEmailUtilizadoEmOutroHospede() throws Exception {
     mockMVC
         .perform(
             put(format(URL_WITH_PARAM, INTEGER_ONE)).contentType(APPLICATION_JSON).content("{}"))

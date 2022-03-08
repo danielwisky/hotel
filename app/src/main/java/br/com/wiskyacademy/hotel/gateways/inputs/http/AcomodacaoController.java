@@ -13,7 +13,7 @@ import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.Acomodac
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.FiltroAcomodacaoRequest;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response.AcomodacaoResponse;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response.PageResponse;
-import br.com.wiskyacademy.hotel.usecases.UpdateAcomodacao;
+import br.com.wiskyacademy.hotel.usecases.AlterarAcomodacao;
 import io.swagger.annotations.ApiOperation;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,7 @@ public class AcomodacaoController {
 
   private final AcomodacaoDatabaseGateway acomodacaoDatabaseGateway;
 
-  private final UpdateAcomodacao updateAcomodacao;
+  private final AlterarAcomodacao alterarAcomodacao;
 
   @PostMapping
   @ResponseStatus(OK)
@@ -56,7 +56,7 @@ public class AcomodacaoController {
       @RequestBody @Valid final AcomodacaoRequest acomodacaoRequest) {
 
     return ResponseEntity.ok(
-        new AcomodacaoResponse(updateAcomodacao.execute(id, acomodacaoRequest.toDomain())));
+        new AcomodacaoResponse(alterarAcomodacao.executar(id, acomodacaoRequest.toDomain())));
   }
 
   @GetMapping("/{id}")

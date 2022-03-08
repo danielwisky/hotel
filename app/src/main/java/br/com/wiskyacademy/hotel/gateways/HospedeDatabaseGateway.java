@@ -13,4 +13,6 @@ public interface HospedeDatabaseGateway {
   Optional<Hospede> findById(Integer id);
 
   Page<Hospede> search(FiltroHospede filtro, Pageable pageable);
+
+  boolean existsByEmail(String email);
 }

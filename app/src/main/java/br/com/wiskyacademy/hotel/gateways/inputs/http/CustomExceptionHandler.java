@@ -6,6 +6,7 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+import br.com.wiskyacademy.hotel.domains.exceptions.BusinessValidationException;
 import br.com.wiskyacademy.hotel.domains.exceptions.ResourceNotFoundException;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response.ErroResponse;
 import java.util.List;
@@ -26,6 +27,12 @@ public class CustomExceptionHandler {
   public HttpEntity<ErroResponse> handlerResourceNotFoundException(
       final ResourceNotFoundException ex) {
     return new ResponseEntity<>(createMessage(ex), createHeaders(), HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(BusinessValidationException.class)
+  public HttpEntity<ErroResponse> handlerBusinessValidationException(
+      final BusinessValidationException ex) {
+    return new ResponseEntity<>(createMessage(ex), createHeaders(), BAD_REQUEST);
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)

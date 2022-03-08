@@ -13,8 +13,8 @@ import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.Acompanh
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.FiltroAcompanhanteRequest;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response.AcompanhanteResponse;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response.PageResponse;
-import br.com.wiskyacademy.hotel.usecases.CreateAcompanhante;
-import br.com.wiskyacademy.hotel.usecases.UpdateAcompanhante;
+import br.com.wiskyacademy.hotel.usecases.AlterarAcompanhante;
+import br.com.wiskyacademy.hotel.usecases.CriarAcompanhante;
 import io.swagger.annotations.ApiOperation;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,8 +35,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequestMapping("/api/v1/hospedes/{hospedeId}/acompanhantes")
 public class AcompanhanteController {
 
-  private final CreateAcompanhante createAcompanhante;
-  private final UpdateAcompanhante updateAcompanhante;
+  private final CriarAcompanhante criarAcompanhante;
+  private final AlterarAcompanhante alterarAcompanhante;
 
   private final AcompanhanteDatabaseGateway acompanhanteDatabaseGateway;
 
@@ -48,7 +48,7 @@ public class AcompanhanteController {
       @RequestBody @Valid final AcompanhanteRequest acompanhanteRequest) {
 
     return ResponseEntity.ok(new AcompanhanteResponse(
-        createAcompanhante.execute(hospedeId, acompanhanteRequest.toDomain())));
+        criarAcompanhante.executar(hospedeId, acompanhanteRequest.toDomain())));
   }
 
   @PutMapping("/{acompanhanteId}")
@@ -60,7 +60,7 @@ public class AcompanhanteController {
       @RequestBody @Valid final AcompanhanteRequest acompanhanteRequest) {
 
     return ResponseEntity.ok(new AcompanhanteResponse(
-        updateAcompanhante.execute(hospedeId, acompanhanteId, acompanhanteRequest.toDomain())));
+        alterarAcompanhante.executar(hospedeId, acompanhanteId, acompanhanteRequest.toDomain())));
   }
 
   @GetMapping("/{acompanhanteId}")

@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UpdateAcomodacao {
+public class AlterarAcomodacao {
 
   private final AcomodacaoDatabaseGateway acomodacaoDatabaseGateway;
 
-  public Acomodacao execute(final Integer id, final Acomodacao acomodacao) {
+  public Acomodacao executar(final Integer id, final Acomodacao acomodacao) {
 
     final Acomodacao acomodacaoDatabase = acomodacaoDatabaseGateway.findById(id)
         .orElseThrow(ResourceNotFoundException::new);

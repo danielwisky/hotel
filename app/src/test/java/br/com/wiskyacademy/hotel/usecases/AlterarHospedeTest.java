@@ -12,6 +12,7 @@ import static org.mockito.Mockito.when;
 
 import br.com.wiskyacademy.hotel.UnitTest;
 import br.com.wiskyacademy.hotel.domains.Hospede;
+import br.com.wiskyacademy.hotel.domains.exceptions.BusinessValidationException;
 import br.com.wiskyacademy.hotel.domains.exceptions.ResourceNotFoundException;
 import br.com.wiskyacademy.hotel.gateways.HospedeDatabaseGateway;
 import org.junit.jupiter.api.Test;
@@ -20,10 +21,10 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-public class UpdateHospedeTest extends UnitTest {
+public class AlterarHospedeTest extends UnitTest {
 
   @InjectMocks
-  private UpdateHospede updateHospede;
+  private AlterarHospede alterarHospede;
 
   @Mock
   private HospedeDatabaseGateway hospedeDatabaseGateway;
@@ -41,7 +42,7 @@ public class UpdateHospedeTest extends UnitTest {
     when(hospedeDatabaseGateway.findById(hospede.getId()))
         .thenReturn(of(hospede));
 
-    updateHospede.execute(hospede.getId(), hospedeComOutroNome);
+    alterarHospede.executar(hospede.getId(), hospedeComOutroNome);
 
     verify(hospedeDatabaseGateway).save(hospedeArgumentCaptor.capture());
 
@@ -59,6 +60,21 @@ public class UpdateHospedeTest extends UnitTest {
     when(hospedeDatabaseGateway.findById(hospede.getId())).thenReturn(empty());
 
     assertThrows(ResourceNotFoundException.class,
-        () -> updateHospede.execute(hospede.getId(), hospede));
+        () -> alterarHospede.executar(hospede.getId(), hospede));
+  }
+
+  @Test
+  void deveLancarExceptionBusinessValidationExceptionQuandoEmailJaCadastrado() {
+    final Hospede hospede = from(Hospede.class).gimme(VALIDO.name());
+    final Hospede hospedeOutroNomeEDocumento =
+        from(Hospede.class).gimme(VALIDO_OUTRO_NOME_E_DOCUMENTO.name());
+
+    when(hospedeDatabaseGateway.findById(hospede.getId()))
+        .thenReturn(of(hospedeOutroNomeEDocumento));
+
+    when(hospedeDatabaseGateway.existsByEmail(hospede.getEmail())).thenReturn(true);
+
+    assertThrows(BusinessValidationException.class,
+        () -> alterarHospede.executar(hospede.getId(), hospede));
   }
 }
