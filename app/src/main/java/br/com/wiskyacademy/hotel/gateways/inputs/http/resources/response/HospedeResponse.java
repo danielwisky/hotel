@@ -1,13 +1,16 @@
 package br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response;
 
 import br.com.wiskyacademy.hotel.domains.Hospede;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import lombok.Data;
 
 @Data
-public class HospedeResponse {
+public class HospedeResponse implements Serializable {
+
+  private static final long serialVersionUID = 2568168741970016110L;
 
   private Integer id;
   private String nome;

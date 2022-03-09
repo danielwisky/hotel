@@ -3,6 +3,7 @@ package br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request;
 import static java.time.LocalDateTime.now;
 
 import br.com.wiskyacademy.hotel.domains.Hospede;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -12,8 +13,10 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class HospedeRequest {
+public class HospedeRequest implements Serializable {
 
+  private static final long serialVersionUID = -180650138397225773L;
+  
   @NotBlank
   private String nome;
   @NotBlank

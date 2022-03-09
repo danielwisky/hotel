@@ -1,4 +1,6 @@
 spring:
+  cache:
+    type: none
   datasource:
     url: 'jdbc:h2:mem:hotel;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL;DATABASE_TO_UPPER=FALSE'
   jpa:
