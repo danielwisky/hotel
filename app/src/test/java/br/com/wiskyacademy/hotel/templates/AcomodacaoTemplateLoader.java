@@ -22,7 +22,7 @@ public class AcomodacaoTemplateLoader implements TemplateLoader {
           add("id", random(Integer.class, range(1, 100)));
           add("nome", "Quarto ${id}");
           add("descricao", "${nome} com capacidade para ${capacidade} pessoas");
-          add("capacidade", random(Integer.class, range(1, 10)));
+          add("capacidade", random(Integer.class, range(4, 10)));
           add("preco", 200.0f);
         }})
         .addTemplate(VALIDO_SEM_ID.name()).inherits(VALIDO.name(), new Rule() {{
