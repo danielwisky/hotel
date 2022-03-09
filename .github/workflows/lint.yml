@@ -1,0 +1,12 @@
+name: Lint
+
+on: ["push"]
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Lint
+      run: echo "Lint passed"

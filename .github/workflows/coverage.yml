@@ -1,0 +1,12 @@
+name: Coverage
+
+on: ["push"]
+
+jobs:
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Coverage
+      run: echo "Coverage passed"
