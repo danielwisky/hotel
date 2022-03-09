@@ -72,7 +72,8 @@ public class AcompanhanteControllerTest extends IntegrationTest {
         .andExpect(jsonPath("$.nome").value(acompanhanteRequest.getNome()))
         .andExpect(jsonPath("$.documento").value(acompanhanteRequest.getDocumento()))
         .andExpect(jsonPath("$.dataNascimento")
-            .value(acompanhanteRequest.getDataNascimento().format(ISO_DATE)));
+            .value(acompanhanteRequest.getDataNascimento().format(ISO_DATE)))
+        .andExpect(jsonPath("$.ativo").value(acompanhanteRequest.isAtivo()));
   }
 
   @Test
@@ -128,7 +129,8 @@ public class AcompanhanteControllerTest extends IntegrationTest {
     acompanhante = acompanhanteDatabaseGateway.save(acompanhante);
 
     mockMVC
-        .perform(get(format(URL_WITH_PARAM, hospede.getId(), acompanhante.getId())).contentType(APPLICATION_JSON))
+        .perform(get(format(URL_WITH_PARAM, hospede.getId(), acompanhante.getId())).contentType(
+            APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(acompanhante.getId()))
         .andExpect(jsonPath("$.nome").value(acompanhante.getNome()))
@@ -140,7 +142,8 @@ public class AcompanhanteControllerTest extends IntegrationTest {
   @Test
   public void aoBuscarUmAcompanhanteDeveRetornar404QuandoNaoEncontrado() throws Exception {
     mockMVC
-        .perform(get(format(URL_WITH_PARAM, INTEGER_ONE, INTEGER_ONE)).contentType(APPLICATION_JSON))
+        .perform(
+            get(format(URL_WITH_PARAM, INTEGER_ONE, INTEGER_ONE)).contentType(APPLICATION_JSON))
         .andExpect(status().isNotFound());
   }
 

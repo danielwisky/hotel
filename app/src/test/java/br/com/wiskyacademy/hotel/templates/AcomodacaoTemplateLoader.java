@@ -34,7 +34,7 @@ public class AcomodacaoTemplateLoader implements TemplateLoader {
           add("descricao", "Uma descrição qualquer");
         }})
         .addTemplate(VALIDO_CAPACIDADE_BAIXA.name()).inherits(VALIDO_SEM_ID.name(), new Rule() {{
-          add("capacidade", 2);
+          add("capacidade", 1);
         }})
         .addTemplate(VALIDO_CAPACIDADE_ALTA.name()).inherits(VALIDO_SEM_ID.name(), new Rule() {{
           add("capacidade", 20);

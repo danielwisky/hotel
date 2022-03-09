@@ -9,16 +9,22 @@ import static org.springframework.http.HttpStatus.OK;
 import br.com.wiskyacademy.hotel.domains.Hospedagem;
 import br.com.wiskyacademy.hotel.domains.exceptions.ResourceNotFoundException;
 import br.com.wiskyacademy.hotel.gateways.HospedagemDatabaseGateway;
+import br.com.wiskyacademy.hotel.gateways.inputs.http.adapters.HospedagemAdapter;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.FiltroHospedagemRequest;
+import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.HospedagemRequest;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response.HospedagemResponse;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response.PageResponse;
+import br.com.wiskyacademy.hotel.usecases.ReservarHospedagem;
 import io.swagger.annotations.ApiOperation;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -29,6 +35,18 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class HospedagemController {
 
   private final HospedagemDatabaseGateway hospedagemDatabaseGateway;
+  private final ReservarHospedagem reservarHospedagem;
+  private final HospedagemAdapter hospedagemAdapter;
+
+  @PostMapping
+  @ResponseStatus(OK)
+  @ApiOperation(value = "Reservar uma hospedagem")
+  public ResponseEntity<HospedagemResponse> reservar(
+      @RequestBody @Valid final HospedagemRequest hospedagemRequest) {
+    final Hospedagem hospedagem = hospedagemAdapter.to(hospedagemRequest);
+    return ResponseEntity.ok(
+        new HospedagemResponse(reservarHospedagem.executar(hospedagem)));
+  }
 
   @GetMapping("/{id}")
   @ResponseStatus(OK)

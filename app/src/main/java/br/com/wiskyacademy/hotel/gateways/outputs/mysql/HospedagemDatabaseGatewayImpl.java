@@ -1,6 +1,7 @@
 package br.com.wiskyacademy.hotel.gateways.outputs.mysql;
 
 import static br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.specifications.HospedagemSpecification.toSpec;
+import static br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.specifications.HospedagemSpecification.toSpecWithoutFetch;
 import static java.util.stream.Collectors.toList;
 
 import br.com.wiskyacademy.hotel.domains.FiltroHospedagem;
@@ -8,6 +9,7 @@ import br.com.wiskyacademy.hotel.domains.Hospedagem;
 import br.com.wiskyacademy.hotel.gateways.HospedagemDatabaseGateway;
 import br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.HospedagemEntity;
 import br.com.wiskyacademy.hotel.gateways.outputs.mysql.repositories.HospedagemRepository;
+import java.time.LocalDate;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -38,5 +40,16 @@ public class HospedagemDatabaseGatewayImpl implements HospedagemDatabaseGateway 
         page.getContent().stream().map(HospedagemEntity::toDomain).collect(toList()),
         page.getPageable(),
         page.getTotalElements());
+  }
+
+  @Override
+  public boolean existsByAcomodacaoAndPeriodoDeEstadia(
+      final Integer acomodacaoId, final LocalDate dataEntrada, final LocalDate dataSaida) {
+    final FiltroHospedagem filtro = FiltroHospedagem.builder()
+        .acomodacao(acomodacaoId)
+        .periodoMenorQue(dataSaida)
+        .periodoMaiorQue(dataEntrada)
+        .build();
+    return hospedagemRepository.count(toSpecWithoutFetch(filtro)) > 0;
   }
 }

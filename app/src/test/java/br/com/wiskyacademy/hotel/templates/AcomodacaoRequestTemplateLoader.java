@@ -16,6 +16,7 @@ public class AcomodacaoRequestTemplateLoader implements TemplateLoader {
       add("descricao", "Quarto Duplo com capacidade para ${capacidade} pessoas");
       add("capacidade", random(Integer.class, range(1, 10)));
       add("preco", random(Float.class, range(10.0, 100.0)));
+      add("ativo", true);
     }});
   }
 }

@@ -135,7 +135,8 @@ public class HospedeControllerTest extends IntegrationTest {
         .andExpect(jsonPath("$.endereco.complemento").value(enderecoRequest.getComplemento()))
         .andExpect(jsonPath("$.email").value(hospedeRequest.getEmail()))
         .andExpect(jsonPath("$.telefone").value(hospedeRequest.getTelefone()))
-        .andExpect(jsonPath("$.celular").value(hospedeRequest.getCelular()));
+        .andExpect(jsonPath("$.celular").value(hospedeRequest.getCelular()))
+        .andExpect(jsonPath("$.ativo").value(hospedeRequest.isAtivo()));
   }
 
   @Test
@@ -193,7 +194,8 @@ public class HospedeControllerTest extends IntegrationTest {
         .andExpect(jsonPath("$.endereco.complemento").value(endereco.getComplemento()))
         .andExpect(jsonPath("$.email").value(hospede.getEmail()))
         .andExpect(jsonPath("$.telefone").value(hospede.getTelefone()))
-        .andExpect(jsonPath("$.celular").value(hospede.getCelular()));
+        .andExpect(jsonPath("$.celular").value(hospede.getCelular()))
+        .andExpect(jsonPath("$.ativo").value(hospede.getAtivo()));
   }
 
   @Test

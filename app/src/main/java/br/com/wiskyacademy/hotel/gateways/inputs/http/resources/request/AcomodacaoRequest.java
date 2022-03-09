@@ -17,6 +17,7 @@ public class AcomodacaoRequest {
   private Integer capacidade;
   @NotNull
   private Float preco;
+  private boolean ativo;
 
   public Acomodacao toDomain() {
     return Acomodacao.builder()
@@ -24,6 +25,7 @@ public class AcomodacaoRequest {
         .descricao(this.descricao)
         .capacidade(this.capacidade)
         .preco(this.preco)
+        .ativo(this.ativo)
         .dataAtualizacao(now())
         .build();
   }

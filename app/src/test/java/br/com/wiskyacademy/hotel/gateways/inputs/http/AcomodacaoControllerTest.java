@@ -69,7 +69,8 @@ public class AcomodacaoControllerTest extends IntegrationTest {
         .andExpect(jsonPath("$.nome").value(acomodacaoRequest.getNome()))
         .andExpect(jsonPath("$.descricao").value(acomodacaoRequest.getDescricao()))
         .andExpect(jsonPath("$.capacidade").value(acomodacaoRequest.getCapacidade()))
-        .andExpect(jsonPath("$.preco").value(acomodacaoRequest.getPreco()));
+        .andExpect(jsonPath("$.preco").value(acomodacaoRequest.getPreco()))
+        .andExpect(jsonPath("$.ativo").value(acomodacaoRequest.isAtivo()));
   }
 
   @Test

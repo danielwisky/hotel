@@ -15,12 +15,14 @@ public class AcompanhanteRequest {
   @NotBlank
   private String documento;
   private LocalDate dataNascimento;
+  private boolean ativo;
 
   public Acompanhante toDomain() {
     return Acompanhante.builder()
         .nome(this.nome)
         .documento(this.documento)
         .dataNascimento(this.dataNascimento)
+        .ativo(this.ativo)
         .dataAtualizacao(now())
         .build();
   }

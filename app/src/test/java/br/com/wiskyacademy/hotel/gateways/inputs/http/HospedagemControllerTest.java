@@ -1,29 +1,37 @@
 package br.com.wiskyacademy.hotel.gateways.inputs.http;
 
 import static br.com.six2six.fixturefactory.Fixture.from;
+import static br.com.wiskyacademy.hotel.templates.FixtureCoreTemplates.VALIDO_CAPACIDADE_BAIXA;
 import static br.com.wiskyacademy.hotel.templates.FixtureCoreTemplates.VALIDO_SEM_ID;
 import static java.lang.String.format;
 import static java.time.format.DateTimeFormatter.ISO_DATE;
 import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.math.NumberUtils.INTEGER_ONE;
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 import br.com.wiskyacademy.hotel.IntegrationTest;
 import br.com.wiskyacademy.hotel.domains.Acomodacao;
+import br.com.wiskyacademy.hotel.domains.Acompanhante;
 import br.com.wiskyacademy.hotel.domains.Endereco;
 import br.com.wiskyacademy.hotel.domains.Hospedagem;
 import br.com.wiskyacademy.hotel.domains.Hospede;
+import br.com.wiskyacademy.hotel.domains.StatusHospedagem;
 import br.com.wiskyacademy.hotel.gateways.AcomodacaoDatabaseGateway;
 import br.com.wiskyacademy.hotel.gateways.AcompanhanteDatabaseGateway;
 import br.com.wiskyacademy.hotel.gateways.HospedagemDatabaseGateway;
 import br.com.wiskyacademy.hotel.gateways.HospedeDatabaseGateway;
+import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.HospedagemRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.LocalDate;
+import java.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +69,186 @@ public class HospedagemControllerTest extends IntegrationTest {
   }
 
   @Test
-  public void deveBuscarUmaAcomodacao() throws Exception {
+  public void deveCriarUmaHospedagem() throws Exception {
+    Acompanhante acompanhante = from(Acompanhante.class).gimme(VALIDO_SEM_ID.name());
+    acompanhante.setHospede(hospedeDatabaseGateway.save(acompanhante.getHospede()));
+    acompanhante = acompanhanteDatabaseGateway.save(acompanhante);
+    final Acomodacao acomodacao = acomodacaoDatabaseGateway.save(
+        from(Acomodacao.class).gimme(VALIDO_SEM_ID.name()));
+
+    final HospedagemRequest hospedagemRequest = new HospedagemRequest();
+    hospedagemRequest.setHospede(acompanhante.getHospede().getId());
+    hospedagemRequest.setAcomodacao(acomodacao.getId());
+    hospedagemRequest.setAcompanhantes(Arrays.asList(acompanhante.getId()));
+    hospedagemRequest.setDataEntrada(LocalDate.of(2022, 3, 20));
+    hospedagemRequest.setDataSaida(LocalDate.of(2022, 3, 26));
+
+    mockMVC
+        .perform(post(URL)
+            .contentType(APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(hospedagemRequest)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.acomodacao.id").value(hospedagemRequest.getAcomodacao()))
+        .andExpect(jsonPath("$.hospede.id").value(hospedagemRequest.getHospede()))
+        .andExpect(
+            jsonPath("$.acompanhantes", hasSize(hospedagemRequest.getAcompanhantes().size())))
+        .andExpect(
+            jsonPath("$.dataEntrada").value(hospedagemRequest.getDataEntrada().format(ISO_DATE)))
+        .andExpect(jsonPath("$.dataSaida").value(hospedagemRequest.getDataSaida().format(ISO_DATE)))
+        .andExpect(jsonPath("$.status").value(StatusHospedagem.RESERVADO.name()));
+  }
+
+  @Test
+  public void aoCriarUmaHospedagemDeveValidarCamposObrigatorios() throws Exception {
+    mockMVC
+        .perform(post(URL).contentType(APPLICATION_JSON).content("{}"))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.erros", hasSize(4)))
+        .andExpect(jsonPath("$.erros", hasItems("acomodacao: must not be null")))
+        .andExpect(jsonPath("$.erros", hasItems("dataEntrada: must not be null")))
+        .andExpect(jsonPath("$.erros", hasItems("dataSaida: must not be null")))
+        .andExpect(jsonPath("$.erros", hasItems("hospede: must not be null")));
+  }
+
+  @Test
+  public void aoCriarUmaHospedagemDeveValidarCapacidadeAcomodacao() throws Exception {
+    Acompanhante acompanhante = from(Acompanhante.class).gimme(VALIDO_SEM_ID.name());
+    acompanhante.setHospede(hospedeDatabaseGateway.save(acompanhante.getHospede()));
+    acompanhante = acompanhanteDatabaseGateway.save(acompanhante);
+    final Acomodacao acomodacao = acomodacaoDatabaseGateway.save(
+        from(Acomodacao.class).gimme(VALIDO_CAPACIDADE_BAIXA.name()));
+
+    final HospedagemRequest hospedagemRequest = new HospedagemRequest();
+    hospedagemRequest.setHospede(acompanhante.getHospede().getId());
+    hospedagemRequest.setAcomodacao(acomodacao.getId());
+    hospedagemRequest.setAcompanhantes(Arrays.asList(acompanhante.getId()));
+    hospedagemRequest.setDataEntrada(LocalDate.of(2022, 3, 20));
+    hospedagemRequest.setDataSaida(LocalDate.of(2022, 3, 26));
+
+    mockMVC
+        .perform(post(URL)
+            .contentType(APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(hospedagemRequest)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.erros", hasSize(1)))
+        .andExpect(jsonPath("$.erros", hasItems(
+            String.format("A capacidade máxima nesta acomodação é de %s hóspede(s).",
+                acomodacao.getCapacidade()))));
+  }
+
+  @Test
+  public void aoCriarUmaHospedagemDeveValidarDisponibilidadeDataEntrada() throws Exception {
+    Acompanhante acompanhante = from(Acompanhante.class).gimme(VALIDO_SEM_ID.name());
+    final Hospede hospede = hospedeDatabaseGateway.save(acompanhante.getHospede());
+    acompanhante.setHospede(hospede);
+    acompanhante = acompanhanteDatabaseGateway.save(acompanhante);
+    final Acomodacao acomodacao = acomodacaoDatabaseGateway.save(
+        from(Acomodacao.class).gimme(VALIDO_SEM_ID.name()));
+
+    final Hospedagem hospedagem = new Hospedagem();
+    hospedagem.setAcomodacao(acomodacao);
+    hospedagem.setAcompanhantes(Arrays.asList(acompanhante));
+    hospedagem.setHospede(hospede);
+    hospedagem.setDataEntrada(LocalDate.of(2022, 3, 20));
+    hospedagem.setDataSaida(LocalDate.of(2022, 4, 20));
+    hospedagem.setStatus(StatusHospedagem.PAGO);
+    hospedagem.setValor(200f);
+    hospedagemDatabaseGateway.save(hospedagem);
+
+    final HospedagemRequest hospedagemRequest = new HospedagemRequest();
+    hospedagemRequest.setHospede(hospede.getId());
+    hospedagemRequest.setAcomodacao(acomodacao.getId());
+    hospedagemRequest.setAcompanhantes(Arrays.asList(acompanhante.getId()));
+    hospedagemRequest.setDataEntrada(LocalDate.of(2022, 3, 20));
+    hospedagemRequest.setDataSaida(LocalDate.of(2022, 3, 26));
+
+    mockMVC
+        .perform(post(URL)
+            .contentType(APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(hospedagemRequest)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.erros", hasSize(1)))
+        .andExpect(jsonPath("$.erros", hasItems(
+            String.format("Acomodação indisponível para o período selecionado.",
+                acomodacao.getCapacidade()))));
+  }
+
+  @Test
+  public void aoCriarUmaHospedagemDeveValidarDisponibilidadeDataSaida() throws Exception {
+    Acompanhante acompanhante = from(Acompanhante.class).gimme(VALIDO_SEM_ID.name());
+    final Hospede hospede = hospedeDatabaseGateway.save(acompanhante.getHospede());
+    acompanhante.setHospede(hospede);
+    acompanhante = acompanhanteDatabaseGateway.save(acompanhante);
+    final Acomodacao acomodacao = acomodacaoDatabaseGateway.save(
+        from(Acomodacao.class).gimme(VALIDO_SEM_ID.name()));
+
+    final Hospedagem hospedagem = new Hospedagem();
+    hospedagem.setAcomodacao(acomodacao);
+    hospedagem.setAcompanhantes(Arrays.asList(acompanhante));
+    hospedagem.setHospede(hospede);
+    hospedagem.setDataEntrada(LocalDate.of(2022, 1, 10));
+    hospedagem.setDataSaida(LocalDate.of(2022, 3, 26));
+    hospedagem.setStatus(StatusHospedagem.PAGO);
+    hospedagem.setValor(200f);
+    hospedagemDatabaseGateway.save(hospedagem);
+
+    final HospedagemRequest hospedagemRequest = new HospedagemRequest();
+    hospedagemRequest.setHospede(hospede.getId());
+    hospedagemRequest.setAcomodacao(acomodacao.getId());
+    hospedagemRequest.setAcompanhantes(Arrays.asList(acompanhante.getId()));
+    hospedagemRequest.setDataEntrada(LocalDate.of(2022, 3, 20));
+    hospedagemRequest.setDataSaida(LocalDate.of(2022, 3, 26));
+
+    mockMVC
+        .perform(post(URL)
+            .contentType(APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(hospedagemRequest)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.erros", hasSize(1)))
+        .andExpect(jsonPath("$.erros", hasItems(
+            String.format("Acomodação indisponível para o período selecionado.",
+                acomodacao.getCapacidade()))));
+  }
+
+  @Test
+  public void aoCriarUmaHospedagemDeveValidarDisponibilidade() throws Exception {
+    Acompanhante acompanhante = from(Acompanhante.class).gimme(VALIDO_SEM_ID.name());
+    final Hospede hospede = hospedeDatabaseGateway.save(acompanhante.getHospede());
+    acompanhante.setHospede(hospede);
+    acompanhante = acompanhanteDatabaseGateway.save(acompanhante);
+    final Acomodacao acomodacao = acomodacaoDatabaseGateway.save(
+        from(Acomodacao.class).gimme(VALIDO_SEM_ID.name()));
+
+    final Hospedagem hospedagem = new Hospedagem();
+    hospedagem.setAcomodacao(acomodacao);
+    hospedagem.setAcompanhantes(Arrays.asList(acompanhante));
+    hospedagem.setHospede(hospede);
+    hospedagem.setDataEntrada(LocalDate.of(2022, 3, 21));
+    hospedagem.setDataSaida(LocalDate.of(2022, 3, 25));
+    hospedagem.setStatus(StatusHospedagem.PAGO);
+    hospedagem.setValor(200f);
+    hospedagemDatabaseGateway.save(hospedagem);
+
+    final HospedagemRequest hospedagemRequest = new HospedagemRequest();
+    hospedagemRequest.setHospede(hospede.getId());
+    hospedagemRequest.setAcomodacao(acomodacao.getId());
+    hospedagemRequest.setAcompanhantes(Arrays.asList(acompanhante.getId()));
+    hospedagemRequest.setDataEntrada(LocalDate.of(2022, 3, 20));
+    hospedagemRequest.setDataSaida(LocalDate.of(2022, 3, 26));
+
+    mockMVC
+        .perform(post(URL)
+            .contentType(APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(hospedagemRequest)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.erros", hasSize(1)))
+        .andExpect(jsonPath("$.erros", hasItems(
+            String.format("Acomodação indisponível para o período selecionado.",
+                acomodacao.getCapacidade()))));
+  }
+
+  @Test
+  public void deveBuscarUmaHospedagem() throws Exception {
     final Hospedagem hospedagem = carregarHospedagem();
     final Acomodacao acomodacao = hospedagem.getAcomodacao();
     final Hospede hospede = hospedagem.getHospede();
@@ -101,7 +288,7 @@ public class HospedagemControllerTest extends IntegrationTest {
   }
 
   @Test
-  public void aoBuscarUmaAcomodacaoDeveRetornar404QuandoNaoEncontrado() throws Exception {
+  public void aoBuscarUmaHospedagemDeveRetornar404QuandoNaoEncontrado() throws Exception {
     mockMVC
         .perform(get(format(URL_WITH_PARAM, INTEGER_ONE)).contentType(APPLICATION_JSON))
         .andExpect(status().isNotFound());

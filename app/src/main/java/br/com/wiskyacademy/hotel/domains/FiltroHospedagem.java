@@ -23,5 +23,7 @@ public class FiltroHospedagem {
   private LocalDateTime dataCheckInMenorQue;
   private LocalDateTime dataCheckOutMaiorQue;
   private LocalDateTime dataCheckOutMenorQue;
+  private LocalDate periodoMaiorQue;
+  private LocalDate periodoMenorQue;
   private String status;
 }

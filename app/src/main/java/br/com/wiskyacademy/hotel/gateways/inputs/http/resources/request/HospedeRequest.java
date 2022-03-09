@@ -27,6 +27,7 @@ public class HospedeRequest {
   @Valid
   @NotNull
   private EnderecoRequest endereco;
+  private boolean ativo;
 
   public Hospede toDomain() {
     return Hospede.builder()
@@ -39,6 +40,7 @@ public class HospedeRequest {
         .endereco(Optional.ofNullable(this.endereco)
             .map(EnderecoRequest::toDomain)
             .orElse(null))
+        .ativo(this.ativo)
         .dataAtualizacao(now())
         .build();
   }

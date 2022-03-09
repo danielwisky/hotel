@@ -3,7 +3,6 @@ package br.com.wiskyacademy.hotel.domains;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Builder.Default;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,7 +17,6 @@ public class Acomodacao {
   private String descricao;
   private Integer capacidade;
   private Float preco;
-  @Default
-  private Boolean ativo = Boolean.TRUE;
+  private Boolean ativo;
   private LocalDateTime dataAtualizacao;
 }

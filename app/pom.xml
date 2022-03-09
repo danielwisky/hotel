@@ -211,6 +211,7 @@
                     <exclude>**.domains.**</exclude>
                     <exclude>**.entities.**</exclude>
                     <exclude>**.resources.**</exclude>
+                    <exclude>**.adapters.**</exclude>
 
                     <exclude>br.com.wiskyacademy.hotel.gateways.inputs.http.CustomExceptionHandler</exclude>
                     <exclude>br.com.wiskyacademy.hotel.HotelApplication</exclude>

@@ -21,6 +21,7 @@ public class HospedeRequestTemplateLoader implements TemplateLoader {
       add("email", "${documento}@email.com");
       add("telefone", regex("(11) \\d{4}-\\d{4}"));
       add("celular", regex("(11) \\d{5}-\\d{4}"));
+      add("ativo", true);
     }});
   }
 }

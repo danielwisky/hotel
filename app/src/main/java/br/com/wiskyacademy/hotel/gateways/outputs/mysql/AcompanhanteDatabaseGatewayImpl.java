@@ -8,6 +8,7 @@ import br.com.wiskyacademy.hotel.domains.FiltroAcompanhante;
 import br.com.wiskyacademy.hotel.gateways.AcompanhanteDatabaseGateway;
 import br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.AcompanhanteEntity;
 import br.com.wiskyacademy.hotel.gateways.outputs.mysql.repositories.AcompanhanteRepository;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,6 +32,14 @@ public class AcompanhanteDatabaseGatewayImpl implements AcompanhanteDatabaseGate
       final Integer hospedeId, final Integer acompanhanteId) {
     return acompanhanteRepository.findByHospedeIdAndId(hospedeId, acompanhanteId)
         .map(AcompanhanteEntity::toDomain);
+  }
+
+  @Override
+  public List<Acompanhante> findByHospedeIdAndAcompanhantesId(
+      final Integer hospedeId, final List<Integer> acompanhantesId) {
+    return acompanhanteRepository.findByHospedeIdAndIdIn(hospedeId, acompanhantesId)
+        .stream()
+        .map(AcompanhanteEntity::toDomain).collect(toList());
   }
 
   @Override

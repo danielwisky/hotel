@@ -16,6 +16,7 @@ public class AcompanhanteRequestTemplateLoader implements TemplateLoader {
       add("nome", name());
       add("documento", regex("\\d{11}"));
       add("dataNascimento", LocalDate.of(1990, 1, 1));
+      add("ativo", true);
     }});
   }
 }
