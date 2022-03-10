@@ -28,7 +28,7 @@ import br.com.wiskyacademy.hotel.gateways.AcomodacaoDatabaseGateway;
 import br.com.wiskyacademy.hotel.gateways.AcompanhanteDatabaseGateway;
 import br.com.wiskyacademy.hotel.gateways.HospedagemDatabaseGateway;
 import br.com.wiskyacademy.hotel.gateways.HospedeDatabaseGateway;
-import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.HospedagemRequest;
+import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.ReservaHospedagemRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -80,25 +80,25 @@ public class HospedagemControllerTest extends IntegrationTest {
     final Acomodacao acomodacao = acomodacaoDatabaseGateway.save(
         from(Acomodacao.class).gimme(VALIDO_SEM_ID.name()));
 
-    final HospedagemRequest hospedagemRequest = new HospedagemRequest();
-    hospedagemRequest.setHospede(acompanhante.getHospede().getId());
-    hospedagemRequest.setAcomodacao(acomodacao.getId());
-    hospedagemRequest.setAcompanhantes(Arrays.asList(acompanhante.getId()));
-    hospedagemRequest.setDataEntrada(LocalDate.of(2022, 3, 20));
-    hospedagemRequest.setDataSaida(LocalDate.of(2022, 3, 26));
+    final ReservaHospedagemRequest reservaHospedagemRequest = new ReservaHospedagemRequest();
+    reservaHospedagemRequest.setHospede(acompanhante.getHospede().getId());
+    reservaHospedagemRequest.setAcomodacao(acomodacao.getId());
+    reservaHospedagemRequest.setAcompanhantes(Arrays.asList(acompanhante.getId()));
+    reservaHospedagemRequest.setDataEntrada(LocalDate.of(2022, 3, 20));
+    reservaHospedagemRequest.setDataSaida(LocalDate.of(2022, 3, 26));
 
     mockMVC
         .perform(post(URL)
             .contentType(APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(hospedagemRequest)))
+            .content(objectMapper.writeValueAsString(reservaHospedagemRequest)))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.acomodacao.id").value(hospedagemRequest.getAcomodacao()))
-        .andExpect(jsonPath("$.hospede.id").value(hospedagemRequest.getHospede()))
+        .andExpect(jsonPath("$.acomodacao.id").value(reservaHospedagemRequest.getAcomodacao()))
+        .andExpect(jsonPath("$.hospede.id").value(reservaHospedagemRequest.getHospede()))
         .andExpect(
-            jsonPath("$.acompanhantes", hasSize(hospedagemRequest.getAcompanhantes().size())))
+            jsonPath("$.acompanhantes", hasSize(reservaHospedagemRequest.getAcompanhantes().size())))
         .andExpect(
-            jsonPath("$.dataEntrada").value(hospedagemRequest.getDataEntrada().format(ISO_DATE)))
-        .andExpect(jsonPath("$.dataSaida").value(hospedagemRequest.getDataSaida().format(ISO_DATE)))
+            jsonPath("$.dataEntrada").value(reservaHospedagemRequest.getDataEntrada().format(ISO_DATE)))
+        .andExpect(jsonPath("$.dataSaida").value(reservaHospedagemRequest.getDataSaida().format(ISO_DATE)))
         .andExpect(jsonPath("$.status").value(StatusHospedagem.RESERVADO.name()));
   }
 
@@ -122,17 +122,17 @@ public class HospedagemControllerTest extends IntegrationTest {
     final Acomodacao acomodacao = acomodacaoDatabaseGateway.save(
         from(Acomodacao.class).gimme(VALIDO_CAPACIDADE_BAIXA.name()));
 
-    final HospedagemRequest hospedagemRequest = new HospedagemRequest();
-    hospedagemRequest.setHospede(acompanhante.getHospede().getId());
-    hospedagemRequest.setAcomodacao(acomodacao.getId());
-    hospedagemRequest.setAcompanhantes(Arrays.asList(acompanhante.getId()));
-    hospedagemRequest.setDataEntrada(LocalDate.of(2022, 3, 20));
-    hospedagemRequest.setDataSaida(LocalDate.of(2022, 3, 26));
+    final ReservaHospedagemRequest reservaHospedagemRequest = new ReservaHospedagemRequest();
+    reservaHospedagemRequest.setHospede(acompanhante.getHospede().getId());
+    reservaHospedagemRequest.setAcomodacao(acomodacao.getId());
+    reservaHospedagemRequest.setAcompanhantes(Arrays.asList(acompanhante.getId()));
+    reservaHospedagemRequest.setDataEntrada(LocalDate.of(2022, 3, 20));
+    reservaHospedagemRequest.setDataSaida(LocalDate.of(2022, 3, 26));
 
     mockMVC
         .perform(post(URL)
             .contentType(APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(hospedagemRequest)))
+            .content(objectMapper.writeValueAsString(reservaHospedagemRequest)))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.erros", hasSize(1)))
         .andExpect(jsonPath("$.erros", hasItems(
@@ -159,17 +159,17 @@ public class HospedagemControllerTest extends IntegrationTest {
     hospedagem.setValor(200f);
     hospedagemDatabaseGateway.save(hospedagem);
 
-    final HospedagemRequest hospedagemRequest = new HospedagemRequest();
-    hospedagemRequest.setHospede(hospede.getId());
-    hospedagemRequest.setAcomodacao(acomodacao.getId());
-    hospedagemRequest.setAcompanhantes(Arrays.asList(acompanhante.getId()));
-    hospedagemRequest.setDataEntrada(LocalDate.of(2022, 3, 20));
-    hospedagemRequest.setDataSaida(LocalDate.of(2022, 3, 26));
+    final ReservaHospedagemRequest reservaHospedagemRequest = new ReservaHospedagemRequest();
+    reservaHospedagemRequest.setHospede(hospede.getId());
+    reservaHospedagemRequest.setAcomodacao(acomodacao.getId());
+    reservaHospedagemRequest.setAcompanhantes(Arrays.asList(acompanhante.getId()));
+    reservaHospedagemRequest.setDataEntrada(LocalDate.of(2022, 3, 20));
+    reservaHospedagemRequest.setDataSaida(LocalDate.of(2022, 3, 26));
 
     mockMVC
         .perform(post(URL)
             .contentType(APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(hospedagemRequest)))
+            .content(objectMapper.writeValueAsString(reservaHospedagemRequest)))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.erros", hasSize(1)))
         .andExpect(jsonPath("$.erros", hasItems(
@@ -196,17 +196,17 @@ public class HospedagemControllerTest extends IntegrationTest {
     hospedagem.setValor(200f);
     hospedagemDatabaseGateway.save(hospedagem);
 
-    final HospedagemRequest hospedagemRequest = new HospedagemRequest();
-    hospedagemRequest.setHospede(hospede.getId());
-    hospedagemRequest.setAcomodacao(acomodacao.getId());
-    hospedagemRequest.setAcompanhantes(Arrays.asList(acompanhante.getId()));
-    hospedagemRequest.setDataEntrada(LocalDate.of(2022, 3, 20));
-    hospedagemRequest.setDataSaida(LocalDate.of(2022, 3, 26));
+    final ReservaHospedagemRequest reservaHospedagemRequest = new ReservaHospedagemRequest();
+    reservaHospedagemRequest.setHospede(hospede.getId());
+    reservaHospedagemRequest.setAcomodacao(acomodacao.getId());
+    reservaHospedagemRequest.setAcompanhantes(Arrays.asList(acompanhante.getId()));
+    reservaHospedagemRequest.setDataEntrada(LocalDate.of(2022, 3, 20));
+    reservaHospedagemRequest.setDataSaida(LocalDate.of(2022, 3, 26));
 
     mockMVC
         .perform(post(URL)
             .contentType(APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(hospedagemRequest)))
+            .content(objectMapper.writeValueAsString(reservaHospedagemRequest)))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.erros", hasSize(1)))
         .andExpect(jsonPath("$.erros", hasItems(
@@ -233,17 +233,17 @@ public class HospedagemControllerTest extends IntegrationTest {
     hospedagem.setValor(200f);
     hospedagemDatabaseGateway.save(hospedagem);
 
-    final HospedagemRequest hospedagemRequest = new HospedagemRequest();
-    hospedagemRequest.setHospede(hospede.getId());
-    hospedagemRequest.setAcomodacao(acomodacao.getId());
-    hospedagemRequest.setAcompanhantes(Arrays.asList(acompanhante.getId()));
-    hospedagemRequest.setDataEntrada(LocalDate.of(2022, 3, 20));
-    hospedagemRequest.setDataSaida(LocalDate.of(2022, 3, 26));
+    final ReservaHospedagemRequest reservaHospedagemRequest = new ReservaHospedagemRequest();
+    reservaHospedagemRequest.setHospede(hospede.getId());
+    reservaHospedagemRequest.setAcomodacao(acomodacao.getId());
+    reservaHospedagemRequest.setAcompanhantes(Arrays.asList(acompanhante.getId()));
+    reservaHospedagemRequest.setDataEntrada(LocalDate.of(2022, 3, 20));
+    reservaHospedagemRequest.setDataSaida(LocalDate.of(2022, 3, 26));
 
     mockMVC
         .perform(post(URL)
             .contentType(APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(hospedagemRequest)))
+            .content(objectMapper.writeValueAsString(reservaHospedagemRequest)))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.erros", hasSize(1)))
         .andExpect(jsonPath("$.erros", hasItems(

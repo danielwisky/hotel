@@ -19,6 +19,7 @@ public class Hospedagem {
   private Hospede hospede;
   private List<Acompanhante> acompanhantes;
   private Float valor;
+  private Float valorPago;
   private LocalDate dataEntrada;
   private LocalDate dataSaida;
   private LocalDateTime dataCheckIn;

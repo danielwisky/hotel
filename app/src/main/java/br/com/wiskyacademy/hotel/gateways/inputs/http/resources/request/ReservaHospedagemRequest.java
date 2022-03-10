@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class HospedagemRequest implements Serializable {
+public class ReservaHospedagemRequest implements Serializable {
 
   private static final long serialVersionUID = 2201638271745786671L;
 

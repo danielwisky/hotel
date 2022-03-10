@@ -11,7 +11,7 @@ import br.com.wiskyacademy.hotel.domains.exceptions.ResourceNotFoundException;
 import br.com.wiskyacademy.hotel.gateways.HospedagemDatabaseGateway;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.adapters.HospedagemAdapter;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.FiltroHospedagemRequest;
-import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.HospedagemRequest;
+import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.ReservaHospedagemRequest;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response.HospedagemResponse;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response.PageResponse;
 import br.com.wiskyacademy.hotel.usecases.CheckIn;
@@ -51,8 +51,8 @@ public class HospedagemController {
   @ApiOperation(value = "Reservar uma hospedagem")
   @CacheEvict(cacheNames = {"buscarHospedagem", "pesquisarHospedagens"}, allEntries = true)
   public ResponseEntity<HospedagemResponse> reservar(
-      @RequestBody @Valid final HospedagemRequest hospedagemRequest) {
-    final Hospedagem hospedagem = hospedagemAdapter.to(hospedagemRequest);
+      @RequestBody @Valid final ReservaHospedagemRequest reservaHospedagemRequest) {
+    final Hospedagem hospedagem = hospedagemAdapter.to(reservaHospedagemRequest);
     return ResponseEntity.ok(
         new HospedagemResponse(reservarHospedagem.executar(hospedagem)));
   }

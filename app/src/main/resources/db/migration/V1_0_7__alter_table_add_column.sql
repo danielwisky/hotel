@@ -7,4 +7,5 @@ ALTER TABLE hospede ADD COLUMN `dt_atualizacao` datetime DEFAULT CURRENT_TIMESTA
 ALTER TABLE acompanhante ADD COLUMN `ativo` BOOLEAN DEFAULT true AFTER hospede_id;
 ALTER TABLE acompanhante ADD COLUMN `dt_atualizacao` datetime DEFAULT CURRENT_TIMESTAMP AFTER ativo;
 
+ALTER TABLE hospedagem ADD COLUMN `valor_pago` float DEFAULT NULL AFTER valor;
 ALTER TABLE hospedagem ADD COLUMN `dt_atualizacao` datetime DEFAULT CURRENT_TIMESTAMP AFTER status;

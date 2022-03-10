@@ -1,7 +1,5 @@
 package br.com.wiskyacademy.hotel.gateways.inputs.http.adapters;
 
-import static java.time.LocalDateTime.now;
-
 import br.com.wiskyacademy.hotel.domains.Acomodacao;
 import br.com.wiskyacademy.hotel.domains.Acompanhante;
 import br.com.wiskyacademy.hotel.domains.Hospedagem;
@@ -10,7 +8,7 @@ import br.com.wiskyacademy.hotel.domains.exceptions.ResourceNotFoundException;
 import br.com.wiskyacademy.hotel.gateways.AcomodacaoDatabaseGateway;
 import br.com.wiskyacademy.hotel.gateways.AcompanhanteDatabaseGateway;
 import br.com.wiskyacademy.hotel.gateways.HospedeDatabaseGateway;
-import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.HospedagemRequest;
+import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.ReservaHospedagemRequest;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -23,14 +21,13 @@ public class HospedagemAdapter {
   private final AcomodacaoDatabaseGateway acomodacaoDatabaseGateway;
   private final HospedeDatabaseGateway hospedeDatabaseGateway;
 
-  public Hospedagem to(final HospedagemRequest request) {
+  public Hospedagem to(final ReservaHospedagemRequest request) {
     return Hospedagem.builder()
         .acomodacao(buscaAcomodacao(request.getAcomodacao()))
         .hospede(buscaHospede(request.getHospede()))
         .acompanhantes(buscaAcompanhantes(request.getAcompanhantes(), request.getHospede()))
         .dataEntrada(request.getDataEntrada())
         .dataSaida(request.getDataSaida())
-        .dataAtualizacao(now())
         .build();
   }
 
@@ -49,5 +46,4 @@ public class HospedagemAdapter {
     return acomodacaoDatabaseGateway.findById(acomodacaoId)
         .orElseThrow(ResourceNotFoundException::new);
   }
-
 }

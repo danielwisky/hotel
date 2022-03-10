@@ -46,6 +46,8 @@ public class HospedagemEntity implements Serializable {
   private List<AcompanhanteEntity> acompanhantes;
   @Column(nullable = false)
   private Float valor;
+  @Column(name = "valor_pago")
+  private Float valorPago;
   @Column(name = "dt_entrada", nullable = false)
   private LocalDate dataEntrada;
   @Column(name = "dt_saida", nullable = false)
@@ -71,6 +73,7 @@ public class HospedagemEntity implements Serializable {
         .map(AcompanhanteEntity::new)
         .collect(toList());
     this.valor = hospedagem.getValor();
+    this.valorPago = hospedagem.getValorPago();
     this.dataEntrada = hospedagem.getDataEntrada();
     this.dataSaida = hospedagem.getDataSaida();
     this.dataCheckIn = hospedagem.getDataCheckIn();
@@ -95,6 +98,7 @@ public class HospedagemEntity implements Serializable {
             .map(AcompanhanteEntity::toDomain)
             .collect(toList()))
         .valor(this.valor)
+        .valorPago(this.valorPago)
         .dataEntrada(this.dataEntrada)
         .dataSaida(this.dataSaida)
         .dataCheckIn(this.dataCheckIn)

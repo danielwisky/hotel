@@ -24,6 +24,7 @@ public class HospedagemResponse implements Serializable {
   private HospedeResponse hospede;
   private List<AcompanhanteResponse> acompanhantes;
   private Float valor;
+  private Float valorPago;
   private LocalDate dataEntrada;
   private LocalDate dataSaida;
   private LocalDateTime dataCheckIn;
@@ -43,6 +44,7 @@ public class HospedagemResponse implements Serializable {
         .stream().map(AcompanhanteResponse::new)
         .collect(Collectors.toList());
     this.valor = hospedagem.getValor();
+    this.valorPago = hospedagem.getValorPago();
     this.dataEntrada = hospedagem.getDataEntrada();
     this.dataSaida = hospedagem.getDataSaida();
     this.dataCheckIn = hospedagem.getDataCheckIn();
