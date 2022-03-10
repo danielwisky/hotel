@@ -12,7 +12,7 @@ import lombok.Data;
 public class AcomodacaoRequest implements Serializable {
 
   private static final long serialVersionUID = 1660105230360907424L;
-  
+
   @NotBlank
   private String nome;
   private String descricao;

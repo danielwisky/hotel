@@ -19,6 +19,11 @@ public abstract class IntegrationTest {
   @Autowired
   private JdbcTemplate jdbcTemplate;
 
+  @BeforeAll
+  public static synchronized void setup() {
+    FixtureFactoryLoader.loadTemplates("br.com.wiskyacademy.hotel.templates");
+  }
+
   @BeforeEach
   public void clearData() {
     JdbcTestUtils.deleteFromTables(jdbcTemplate,
@@ -28,10 +33,5 @@ public abstract class IntegrationTest {
         "endereco",
         "hospede",
         "acomodacao");
-  }
-
-  @BeforeAll
-  public static synchronized void setup() {
-    FixtureFactoryLoader.loadTemplates("br.com.wiskyacademy.hotel.templates");
   }
 }
