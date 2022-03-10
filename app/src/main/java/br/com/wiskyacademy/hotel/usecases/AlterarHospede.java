@@ -1,5 +1,6 @@
 package br.com.wiskyacademy.hotel.usecases;
 
+import static java.time.LocalDateTime.now;
 import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
 
 import br.com.wiskyacademy.hotel.domains.Hospede;
@@ -24,6 +25,7 @@ public class AlterarHospede {
 
     hospede.setId(hospedeDatabase.getId());
     hospede.getEndereco().setId(hospedeDatabase.getEndereco().getId());
+    hospede.setDataAtualizacao(now());
 
     return hospedeDatabaseGateway.save(hospede);
   }

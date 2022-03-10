@@ -1,5 +1,7 @@
 package br.com.wiskyacademy.hotel.usecases;
 
+import static java.time.LocalDateTime.now;
+
 import br.com.wiskyacademy.hotel.domains.Acomodacao;
 import br.com.wiskyacademy.hotel.domains.Hospedagem;
 import br.com.wiskyacademy.hotel.domains.StatusHospedagem;
@@ -25,6 +27,7 @@ public class ReservarHospedagem {
     hospedagem.setValor(calculaValorHospedagem.executa(
         acomodacao.getPreco(), hospedagem.getDataEntrada(), hospedagem.getDataSaida()));
     hospedagem.setStatus(StatusHospedagem.RESERVADO);
+    hospedagem.setDataAtualizacao(now());
 
     return hospedagemDatabaseGateway.save(hospedagem);
   }

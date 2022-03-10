@@ -14,6 +14,8 @@ import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.FiltroHo
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.HospedagemRequest;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response.HospedagemResponse;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response.PageResponse;
+import br.com.wiskyacademy.hotel.usecases.CheckIn;
+import br.com.wiskyacademy.hotel.usecases.CheckOut;
 import br.com.wiskyacademy.hotel.usecases.ReservarHospedagem;
 import io.swagger.annotations.ApiOperation;
 import javax.validation.Valid;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,8 +38,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class HospedagemController {
 
   private final HospedagemDatabaseGateway hospedagemDatabaseGateway;
-  private final ReservarHospedagem reservarHospedagem;
   private final HospedagemAdapter hospedagemAdapter;
+  private final ReservarHospedagem reservarHospedagem;
+  private final CheckIn checkIn;
+  private final CheckOut checkOut;
 
   @PostMapping
   @ResponseStatus(OK)
@@ -46,6 +51,20 @@ public class HospedagemController {
     final Hospedagem hospedagem = hospedagemAdapter.to(hospedagemRequest);
     return ResponseEntity.ok(
         new HospedagemResponse(reservarHospedagem.executar(hospedagem)));
+  }
+
+  @PutMapping("/{id}/check-in")
+  @ResponseStatus(OK)
+  @ApiOperation(value = "Realizar check-in de uma hospedagem")
+  public ResponseEntity<HospedagemResponse> checkIn(@PathVariable final Integer id) {
+    return ResponseEntity.ok(new HospedagemResponse(checkIn.executar(id)));
+  }
+
+  @PutMapping("/{id}/check-out")
+  @ResponseStatus(OK)
+  @ApiOperation(value = "Realizar check-out de uma hospedagem")
+  public ResponseEntity<HospedagemResponse> checkOut(@PathVariable final Integer id) {
+    return ResponseEntity.ok(new HospedagemResponse(checkOut.executar(id)));
   }
 
   @GetMapping("/{id}")
