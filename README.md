@@ -14,6 +14,7 @@ O Sistema de Gestão de Hospedagem será utilizado na ministração de um curso 
 
 * [Java](https://www.java.com/pt-BR/)
 * [Spring Boot](https://spring.io/projects/spring-boot)
+* [Redis](https://redis.io/)
 * [Maven](https://maven.apache.org/)
 * [MySQL](https://www.mysql.com/)
 * [Flyway](https://flywaydb.org/)
