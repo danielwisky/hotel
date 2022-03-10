@@ -1,10 +1,13 @@
 package br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response;
 
 import br.com.wiskyacademy.hotel.domains.Endereco;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.io.Serializable;
 import lombok.Data;
 
 @Data
+@JsonInclude(Include.NON_NULL)
 public class EnderecoResponse implements Serializable {
 
   private static final long serialVersionUID = 3721066824018350054L;

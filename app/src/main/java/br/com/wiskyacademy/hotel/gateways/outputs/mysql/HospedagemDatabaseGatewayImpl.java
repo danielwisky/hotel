@@ -6,6 +6,7 @@ import static java.util.stream.Collectors.toList;
 
 import br.com.wiskyacademy.hotel.domains.FiltroHospedagem;
 import br.com.wiskyacademy.hotel.domains.Hospedagem;
+import br.com.wiskyacademy.hotel.domains.StatusHospedagem;
 import br.com.wiskyacademy.hotel.gateways.HospedagemDatabaseGateway;
 import br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.HospedagemEntity;
 import br.com.wiskyacademy.hotel.gateways.outputs.mysql.repositories.HospedagemRepository;
@@ -49,6 +50,7 @@ public class HospedagemDatabaseGatewayImpl implements HospedagemDatabaseGateway 
         .acomodacao(acomodacaoId)
         .periodoMenorQue(dataSaida)
         .periodoMaiorQue(dataEntrada)
+        .statusNot(StatusHospedagem.CANCELADO.name())
         .build();
     return hospedagemRepository.count(toSpecWithoutFetch(filtro)) > 0;
   }

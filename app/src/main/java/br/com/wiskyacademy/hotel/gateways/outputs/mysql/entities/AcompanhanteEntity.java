@@ -6,7 +6,6 @@ import br.com.wiskyacademy.hotel.domains.Acompanhante;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,7 +34,7 @@ public class AcompanhanteEntity implements Serializable {
   private String documento;
   @Column(nullable = false, name = "dt_nascimento")
   private LocalDate dataNascimento;
-  @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+  @ManyToOne
   @JoinColumn(name = "hospede_id", nullable = false)
   private HospedeEntity hospede;
   private Boolean ativo;

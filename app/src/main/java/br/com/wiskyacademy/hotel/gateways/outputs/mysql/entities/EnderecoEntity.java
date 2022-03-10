@@ -2,7 +2,6 @@ package br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities;
 
 import br.com.wiskyacademy.hotel.domains.Endereco;
 import java.io.Serializable;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,12 +11,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "endereco")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class EnderecoEntity implements Serializable {
 
   private static final long serialVersionUID = 1179589141758507364L;
@@ -39,8 +42,9 @@ public class EnderecoEntity implements Serializable {
   private String logradouro;
   @Column(length = 100)
   private String complemento;
-  @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToOne(orphanRemoval = true)
   @JoinColumn(name = "hospede_id")
+  @ToString.Exclude
   private HospedeEntity hospede;
 
   public EnderecoEntity(final Endereco endereco) {

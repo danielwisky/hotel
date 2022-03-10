@@ -26,4 +26,5 @@ public class FiltroHospedagem {
   private LocalDate periodoMaiorQue;
   private LocalDate periodoMenorQue;
   private String status;
+  private String statusNot;
 }

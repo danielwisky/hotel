@@ -35,10 +35,10 @@ public class HospedagemEntity implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
-  @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+  @ManyToOne
   @JoinColumn(name = "acomodacao_id", nullable = false)
   private AcomodacaoEntity acomodacao;
-  @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+  @ManyToOne
   @JoinColumn(name = "hospede_id", nullable = false)
   private HospedeEntity hospede;
   @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REMOVE})

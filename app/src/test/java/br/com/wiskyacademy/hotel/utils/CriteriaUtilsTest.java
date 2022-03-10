@@ -137,6 +137,24 @@ public class CriteriaUtilsTest extends UnitTest {
   }
 
   @Test
+  public void deveAdicionarDiferenteQuandoValorNaoForNulo() {
+    final List<Predicate> predicates = new ArrayList<>();
+    final Integer valor = 1;
+    CriteriaUtils.addNotEqualConditionIfNotNull(criteriaBuilder, predicates, valor, null);
+
+    assertEquals(INTEGER_ONE, predicates.size());
+  }
+
+  @Test
+  public void naoDeveAdicionarDiferenteQuandoValorNulo() {
+    final List<Predicate> predicates = new ArrayList<>();
+    final Integer valor = null;
+    CriteriaUtils.addNotEqualConditionIfNotNull(criteriaBuilder, predicates, valor, null);
+
+    assertEquals(INTEGER_ZERO, predicates.size());
+  }
+
+  @Test
   public void naoDeveAdicionarMenorOuIgualQuandoValorLocalDateForNulo() {
     final List<Predicate> predicates = new ArrayList<>();
     final LocalDate valor = null;

@@ -1,5 +1,7 @@
 package br.com.wiskyacademy.hotel.usecases;
 
+import static java.time.LocalDateTime.now;
+
 import br.com.wiskyacademy.hotel.domains.Hospede;
 import br.com.wiskyacademy.hotel.domains.exceptions.BusinessValidationException;
 import br.com.wiskyacademy.hotel.gateways.HospedeDatabaseGateway;
@@ -14,6 +16,7 @@ public class CriarHospede {
 
   public Hospede executar(final Hospede hospede) {
     validarHospede(hospede);
+    hospede.setDataAtualizacao(now());
     return hospedeDatabaseGateway.save(hospede);
   }
 

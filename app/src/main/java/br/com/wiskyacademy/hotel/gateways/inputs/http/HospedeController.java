@@ -18,6 +18,8 @@ import br.com.wiskyacademy.hotel.usecases.CriarHospede;
 import io.swagger.annotations.ApiOperation;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -42,6 +44,7 @@ public class HospedeController {
   @PostMapping
   @ResponseStatus(OK)
   @ApiOperation(value = "Criar um hospede")
+  @CacheEvict(cacheNames = {"buscarHospede", "pesquisarHospedes"}, allEntries = true)
   public ResponseEntity<HospedeResponse> criar(
       @RequestBody @Valid final HospedeRequest hospedeRequest) {
 
@@ -52,6 +55,7 @@ public class HospedeController {
   @PutMapping("/{id}")
   @ResponseStatus(OK)
   @ApiOperation(value = "Editar um hospede")
+  @CacheEvict(cacheNames = {"buscarHospede", "pesquisarHospedes"}, allEntries = true)
   public ResponseEntity<HospedeResponse> editar(
       @PathVariable final Integer id,
       @RequestBody @Valid final HospedeRequest hospedeRequest) {
@@ -63,6 +67,7 @@ public class HospedeController {
   @GetMapping("/{id}")
   @ResponseStatus(OK)
   @ApiOperation(value = "Buscar um hospede por id")
+  @Cacheable(value = "buscarHospede", keyGenerator = "customKeyGenerator")
   public ResponseEntity<HospedeResponse> buscar(@PathVariable final Integer id) {
     return ResponseEntity.ok(hospedeDatabaseGateway
         .findById(id)
@@ -73,6 +78,7 @@ public class HospedeController {
   @GetMapping
   @ResponseStatus(OK)
   @ApiOperation(value = "Pesquisa hospedes cadastrados")
+  @Cacheable(value = "pesquisarHospedes", keyGenerator = "customKeyGenerator")
   public ResponseEntity<PageResponse<HospedeResponse>> pesquisar(
       final FiltroHospedeRequest filtro,
       @RequestParam(defaultValue = "0") final Integer pagina,

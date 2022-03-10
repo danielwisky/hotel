@@ -4,6 +4,8 @@ import static java.util.Optional.ofNullable;
 import static org.apache.commons.collections4.CollectionUtils.emptyIfNull;
 
 import br.com.wiskyacademy.hotel.domains.Hospedagem;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,6 +14,7 @@ import java.util.stream.Collectors;
 import lombok.Data;
 
 @Data
+@JsonInclude(Include.NON_NULL)
 public class HospedagemResponse implements Serializable {
 
   private static final long serialVersionUID = -6806865903452998061L;

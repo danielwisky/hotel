@@ -1,5 +1,7 @@
 package br.com.wiskyacademy.hotel.usecases;
 
+import static java.time.LocalDateTime.now;
+
 import br.com.wiskyacademy.hotel.domains.Acompanhante;
 import br.com.wiskyacademy.hotel.domains.exceptions.ResourceNotFoundException;
 import br.com.wiskyacademy.hotel.gateways.AcompanhanteDatabaseGateway;
@@ -24,6 +26,7 @@ public class AlterarAcompanhante {
 
     acompanhante.setId(acompanhanteDatabase.getId());
     acompanhante.setHospede(acompanhanteDatabase.getHospede());
+    acompanhante.setDataAtualizacao(now());
 
     return acompanhanteDatabaseGateway.save(acompanhante);
   }

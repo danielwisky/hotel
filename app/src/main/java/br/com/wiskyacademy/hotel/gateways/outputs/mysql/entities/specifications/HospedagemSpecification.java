@@ -12,6 +12,7 @@ import static br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.HospedeE
 import static br.com.wiskyacademy.hotel.utils.CriteriaUtils.addEqualConditionIfNotNull;
 import static br.com.wiskyacademy.hotel.utils.CriteriaUtils.addGreaterThanOrEqualToIfNotNull;
 import static br.com.wiskyacademy.hotel.utils.CriteriaUtils.addLessThanOrEqualToIfNotNull;
+import static br.com.wiskyacademy.hotel.utils.CriteriaUtils.addNotEqualConditionIfNotNull;
 import static java.util.Objects.nonNull;
 
 import br.com.wiskyacademy.hotel.domains.FiltroHospedagem;
@@ -80,8 +81,8 @@ public class HospedagemSpecification {
         builder, predicates, filtro.getDataCheckOutMaiorQue(), root.get(DATA_CHECK_OUT));
     addLessThanOrEqualToIfNotNull(
         builder, predicates, filtro.getDataCheckOutMenorQue(), root.get(DATA_CHECK_OUT));
-    addEqualConditionIfNotNull(
-        builder, predicates, filtro.getStatus(), root.get(STATUS));
+    addEqualConditionIfNotNull(builder, predicates, filtro.getStatus(), root.get(STATUS));
+    addNotEqualConditionIfNotNull(builder, predicates, filtro.getStatusNot(), root.get(STATUS));
     return predicates;
   }
 }

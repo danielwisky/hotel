@@ -16,7 +16,7 @@ import lombok.Data;
 public class HospedeRequest implements Serializable {
 
   private static final long serialVersionUID = -180650138397225773L;
-  
+
   @NotBlank
   private String nome;
   @NotBlank

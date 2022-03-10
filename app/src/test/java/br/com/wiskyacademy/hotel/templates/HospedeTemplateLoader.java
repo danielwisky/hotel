@@ -24,6 +24,7 @@ public class HospedeTemplateLoader implements TemplateLoader {
           add("email", "${id}@email.com");
           add("telefone", regex("(11) \\d{4}-\\d{4}"));
           add("celular", regex("(11) \\d{5}-\\d{4}"));
+          add("ativo", true);
         }})
         .addTemplate(VALIDO_SEM_ID.name()).inherits(VALIDO.name(), new Rule() {{
           add("id", null);

@@ -134,4 +134,16 @@ public class CriteriaUtils {
       predicates.add(like);
     }
   }
+
+  public static void addNotEqualConditionIfNotNull(
+      final CriteriaBuilder builder,
+      final List<Predicate> predicates,
+      final Object value,
+      final Path<Object> field) {
+
+    if (nonNull(value)) {
+      final Predicate like = builder.notEqual(field, value);
+      predicates.add(like);
+    }
+  }
 }
