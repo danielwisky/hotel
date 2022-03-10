@@ -1,7 +1,6 @@
 package br.com.wiskyacademy.hotel.usecases;
 
-import static br.com.wiskyacademy.hotel.utils.DateUtils.anteriorDataMinimaAtual;
-import static br.com.wiskyacademy.hotel.utils.DateUtils.posteriorDataMaximaAtual;
+import static br.com.wiskyacademy.hotel.utils.DateUtils.isBetweenCurrentPeriod;
 import static java.time.LocalDateTime.now;
 import static java.util.Objects.nonNull;
 
@@ -36,8 +35,7 @@ public class CheckIn {
       throw new BusinessValidationException("o check-in já foi realizado");
     }
 
-    if (anteriorDataMinimaAtual(hospedagem.getDataEntrada())
-        || posteriorDataMaximaAtual(hospedagem.getDataSaida())) {
+    if (!isBetweenCurrentPeriod(hospedagem.getDataEntrada(), hospedagem.getDataSaida())) {
       throw new BusinessValidationException("check-in fora do período de hospedagem");
     }
   }

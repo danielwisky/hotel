@@ -20,6 +20,8 @@ import br.com.wiskyacademy.hotel.usecases.ReservarHospedagem;
 import io.swagger.annotations.ApiOperation;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -46,6 +48,7 @@ public class HospedagemController {
   @PostMapping
   @ResponseStatus(OK)
   @ApiOperation(value = "Reservar uma hospedagem")
+  @CacheEvict(cacheNames = {"buscarHospedagem", "pesquisarHospedagens"}, allEntries = true)
   public ResponseEntity<HospedagemResponse> reservar(
       @RequestBody @Valid final HospedagemRequest hospedagemRequest) {
     final Hospedagem hospedagem = hospedagemAdapter.to(hospedagemRequest);
@@ -56,6 +59,7 @@ public class HospedagemController {
   @PutMapping("/{id}/check-in")
   @ResponseStatus(OK)
   @ApiOperation(value = "Realizar check-in de uma hospedagem")
+  @CacheEvict(cacheNames = {"buscarHospedagem", "pesquisarHospedagens"}, allEntries = true)
   public ResponseEntity<HospedagemResponse> checkIn(@PathVariable final Integer id) {
     return ResponseEntity.ok(new HospedagemResponse(checkIn.executar(id)));
   }
@@ -63,6 +67,7 @@ public class HospedagemController {
   @PutMapping("/{id}/check-out")
   @ResponseStatus(OK)
   @ApiOperation(value = "Realizar check-out de uma hospedagem")
+  @CacheEvict(cacheNames = {"buscarHospedagem", "pesquisarHospedagens"}, allEntries = true)
   public ResponseEntity<HospedagemResponse> checkOut(@PathVariable final Integer id) {
     return ResponseEntity.ok(new HospedagemResponse(checkOut.executar(id)));
   }
@@ -70,6 +75,7 @@ public class HospedagemController {
   @GetMapping("/{id}")
   @ResponseStatus(OK)
   @ApiOperation(value = "Buscar um hospedagens por id")
+  @Cacheable(value = "buscarHospedagem", keyGenerator = "customKeyGenerator")
   public ResponseEntity<HospedagemResponse> buscar(@PathVariable final Integer id) {
     return ResponseEntity.ok(hospedagemDatabaseGateway
         .findById(id)
@@ -80,6 +86,7 @@ public class HospedagemController {
   @GetMapping
   @ResponseStatus(OK)
   @ApiOperation(value = "Pesquisa hospedagens cadastrados")
+  @Cacheable(value = "pesquisarHospedagens", keyGenerator = "customKeyGenerator")
   public ResponseEntity<PageResponse<HospedagemResponse>> pesquisar(
       final FiltroHospedagemRequest filtro,
       @RequestParam(defaultValue = "0") final Integer pagina,

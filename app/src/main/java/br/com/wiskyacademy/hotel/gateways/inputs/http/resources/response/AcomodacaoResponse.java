@@ -1,6 +1,8 @@
 package br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response;
 
 import br.com.wiskyacademy.hotel.domains.Acomodacao;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -14,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(Include.NON_NULL)
 public class AcomodacaoResponse implements Serializable {
 
   private static final long serialVersionUID = -7444529101318354312L;

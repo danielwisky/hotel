@@ -1,6 +1,8 @@
 package br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response;
 
 import br.com.wiskyacademy.hotel.domains.Hospede;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -8,6 +10,7 @@ import java.util.Optional;
 import lombok.Data;
 
 @Data
+@JsonInclude(Include.NON_NULL)
 public class HospedeResponse implements Serializable {
 
   private static final long serialVersionUID = 2568168741970016110L;

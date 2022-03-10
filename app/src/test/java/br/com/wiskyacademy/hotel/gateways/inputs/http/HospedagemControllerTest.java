@@ -5,7 +5,6 @@ import static br.com.wiskyacademy.hotel.templates.FixtureCoreTemplates.VALIDO_CA
 import static br.com.wiskyacademy.hotel.templates.FixtureCoreTemplates.VALIDO_SEM_ID;
 import static java.lang.String.format;
 import static java.time.format.DateTimeFormatter.ISO_DATE;
-import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.math.NumberUtils.INTEGER_ONE;
 import static org.hamcrest.Matchers.hasItems;
@@ -13,6 +12,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -31,6 +31,7 @@ import br.com.wiskyacademy.hotel.gateways.HospedeDatabaseGateway;
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request.HospedagemRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,6 +43,9 @@ public class HospedagemControllerTest extends IntegrationTest {
 
   private static final String URL = "/api/v1/hospedagens";
   private static final String URL_WITH_PARAM = "/api/v1/hospedagens/%s";
+  private static final String URL_CHECK_IN = "/api/v1/hospedagens/%s/check-in";
+  private static final String URL_CHECK_OUT = "/api/v1/hospedagens/%s/check-out";
+
 
   @Autowired
   private WebApplicationContext webAppContext;
@@ -248,6 +252,38 @@ public class HospedagemControllerTest extends IntegrationTest {
   }
 
   @Test
+  public void deveRealizarCheckIn() throws Exception {
+    final Hospedagem hospedagem = carregarHospedagem();
+
+    mockMVC
+        .perform(put(format(URL_CHECK_IN, hospedagem.getId())).contentType(APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.acomodacao.id").value(hospedagem.getAcomodacao().getId()))
+        .andExpect(jsonPath("$.hospede.id").value(hospedagem.getHospede().getId()))
+        .andExpect(jsonPath("$.acompanhantes", hasSize(hospedagem.getAcompanhantes().size())))
+        .andExpect(jsonPath("$.dataEntrada").value(hospedagem.getDataEntrada().format(ISO_DATE)))
+        .andExpect(jsonPath("$.dataSaida").value(hospedagem.getDataSaida().format(ISO_DATE)))
+        .andExpect(jsonPath("$.status").value(hospedagem.getStatus().name()));
+  }
+
+  @Test
+  public void deveRealizarCheckOut() throws Exception {
+    Hospedagem hospedagem = carregarHospedagem();
+    hospedagem.setDataCheckIn(LocalDateTime.now());
+    hospedagem = hospedagemDatabaseGateway.save(hospedagem);
+
+    mockMVC
+        .perform(put(format(URL_CHECK_OUT, hospedagem.getId())).contentType(APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.acomodacao.id").value(hospedagem.getAcomodacao().getId()))
+        .andExpect(jsonPath("$.hospede.id").value(hospedagem.getHospede().getId()))
+        .andExpect(jsonPath("$.acompanhantes", hasSize(hospedagem.getAcompanhantes().size())))
+        .andExpect(jsonPath("$.dataEntrada").value(hospedagem.getDataEntrada().format(ISO_DATE)))
+        .andExpect(jsonPath("$.dataSaida").value(hospedagem.getDataSaida().format(ISO_DATE)))
+        .andExpect(jsonPath("$.status").value(hospedagem.getStatus().name()));
+  }
+
+  @Test
   public void deveBuscarUmaHospedagem() throws Exception {
     final Hospedagem hospedagem = carregarHospedagem();
     final Acomodacao acomodacao = hospedagem.getAcomodacao();
@@ -280,10 +316,6 @@ public class HospedagemControllerTest extends IntegrationTest {
         .andExpect(jsonPath("$.acompanhantes", hasSize(hospedagem.getAcompanhantes().size())))
         .andExpect(jsonPath("$.dataEntrada").value(hospedagem.getDataEntrada().format(ISO_DATE)))
         .andExpect(jsonPath("$.dataSaida").value(hospedagem.getDataSaida().format(ISO_DATE)))
-        .andExpect(jsonPath("$.dataCheckIn")
-            .value(hospedagem.getDataCheckIn().format(ISO_DATE_TIME)))
-        .andExpect(jsonPath("$.dataCheckOut")
-            .value(hospedagem.getDataCheckOut().format(ISO_DATE_TIME)))
         .andExpect(jsonPath("$.status").value(hospedagem.getStatus().name()));
   }
 
@@ -334,10 +366,6 @@ public class HospedagemControllerTest extends IntegrationTest {
             .value(hospedagem.getDataEntrada().format(ISO_DATE)))
         .andExpect(jsonPath("$.elementos[0].dataSaida")
             .value(hospedagem.getDataSaida().format(ISO_DATE)))
-        .andExpect(jsonPath("$.elementos[0].dataCheckIn")
-            .value(hospedagem.getDataCheckIn().format(ISO_DATE_TIME)))
-        .andExpect(jsonPath("$.elementos[0].dataCheckOut")
-            .value(hospedagem.getDataCheckOut().format(ISO_DATE_TIME)))
         .andExpect(jsonPath("$.elementos[0].status").value(hospedagem.getStatus().name()))
         .andExpect(jsonPath("$.pagina").value(0))
         .andExpect(jsonPath("$.tamanho").value(20))
@@ -390,10 +418,6 @@ public class HospedagemControllerTest extends IntegrationTest {
             .value(hospedagem.getDataEntrada().format(ISO_DATE)))
         .andExpect(jsonPath("$.elementos[0].dataSaida")
             .value(hospedagem.getDataSaida().format(ISO_DATE)))
-        .andExpect(jsonPath("$.elementos[0].dataCheckIn")
-            .value(hospedagem.getDataCheckIn().format(ISO_DATE_TIME)))
-        .andExpect(jsonPath("$.elementos[0].dataCheckOut")
-            .value(hospedagem.getDataCheckOut().format(ISO_DATE_TIME)))
         .andExpect(jsonPath("$.elementos[0].status").value(hospedagem.getStatus().name()))
         .andExpect(jsonPath("$.pagina").value(0))
         .andExpect(jsonPath("$.tamanho").value(20))

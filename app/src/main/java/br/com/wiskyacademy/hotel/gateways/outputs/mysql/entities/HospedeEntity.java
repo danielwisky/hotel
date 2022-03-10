@@ -35,7 +35,7 @@ public class HospedeEntity implements Serializable {
   private String documento;
   @Column(nullable = false, name = "dt_nascimento")
   private LocalDate dataNascimento;
-  @OneToOne(mappedBy = "hospede", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToOne(cascade = CascadeType.ALL, mappedBy = "hospede", orphanRemoval = true)
   private EnderecoEntity endereco;
   @Column(nullable = false, length = 100, unique = true)
   private String email;

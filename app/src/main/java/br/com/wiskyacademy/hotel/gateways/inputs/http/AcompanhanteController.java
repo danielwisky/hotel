@@ -18,6 +18,8 @@ import br.com.wiskyacademy.hotel.usecases.CriarAcompanhante;
 import io.swagger.annotations.ApiOperation;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -43,6 +45,7 @@ public class AcompanhanteController {
   @PostMapping
   @ResponseStatus(OK)
   @ApiOperation(value = "Criar um acompanhante")
+  @CacheEvict(cacheNames = {"buscarAcompanhante", "pesquisarAcompanhantes"}, allEntries = true)
   public ResponseEntity<AcompanhanteResponse> criar(
       @PathVariable final Integer hospedeId,
       @RequestBody @Valid final AcompanhanteRequest acompanhanteRequest) {
@@ -54,6 +57,7 @@ public class AcompanhanteController {
   @PutMapping("/{acompanhanteId}")
   @ResponseStatus(OK)
   @ApiOperation(value = "Editar um acompanhante")
+  @CacheEvict(cacheNames = {"buscarAcompanhante", "pesquisarAcompanhantes"}, allEntries = true)
   public ResponseEntity<AcompanhanteResponse> editar(
       @PathVariable final Integer hospedeId,
       @PathVariable final Integer acompanhanteId,
@@ -66,6 +70,7 @@ public class AcompanhanteController {
   @GetMapping("/{acompanhanteId}")
   @ResponseStatus(OK)
   @ApiOperation(value = "Buscar um acompanhante por id")
+  @Cacheable(value = "buscarAcompanhante", keyGenerator = "customKeyGenerator")
   public ResponseEntity<AcompanhanteResponse> buscar(
       @PathVariable final Integer hospedeId,
       @PathVariable final Integer acompanhanteId) {
@@ -79,6 +84,7 @@ public class AcompanhanteController {
   @GetMapping
   @ResponseStatus(OK)
   @ApiOperation(value = "Pesquisa acompanhantes cadastrados")
+  @Cacheable(value = "pesquisarAcompanhantes", keyGenerator = "customKeyGenerator")
   public ResponseEntity<PageResponse<AcompanhanteResponse>> pesquisar(
       @PathVariable final Integer hospedeId,
       final FiltroAcompanhanteRequest filtro,

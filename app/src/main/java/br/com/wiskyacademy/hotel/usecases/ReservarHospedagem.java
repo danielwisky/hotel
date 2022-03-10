@@ -16,7 +16,6 @@ public class ReservarHospedagem {
 
   private final CalculaValorHospedagem calculaValorHospedagem;
   private final ValidaReservaAcomodacao validaReservaAcomodacao;
-
   private final HospedagemDatabaseGateway hospedagemDatabaseGateway;
 
   public Hospedagem executar(final Hospedagem hospedagem) {
