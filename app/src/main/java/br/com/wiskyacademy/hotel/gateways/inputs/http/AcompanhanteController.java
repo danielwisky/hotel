@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Controller
@@ -69,35 +70,36 @@ public class AcompanhanteController {
 
   @GetMapping("/{acompanhanteId}")
   @ResponseStatus(OK)
+  @ResponseBody
   @ApiOperation(value = "Buscar um acompanhante por id")
   @Cacheable(value = "buscarAcompanhante", keyGenerator = "customKeyGenerator")
-  public ResponseEntity<AcompanhanteResponse> buscar(
+  public AcompanhanteResponse buscar(
       @PathVariable final Integer hospedeId,
       @PathVariable final Integer acompanhanteId) {
-    return ResponseEntity.ok(
-        acompanhanteDatabaseGateway
-            .findByHospedeIdAndAcompanhanteId(hospedeId, acompanhanteId)
-            .map(AcompanhanteResponse::new)
-            .orElseThrow(ResourceNotFoundException::new));
+    return acompanhanteDatabaseGateway
+        .findByHospedeIdAndAcompanhanteId(hospedeId, acompanhanteId)
+        .map(AcompanhanteResponse::new)
+        .orElseThrow(ResourceNotFoundException::new);
   }
 
   @GetMapping
   @ResponseStatus(OK)
+  @ResponseBody
   @ApiOperation(value = "Pesquisa acompanhantes cadastrados")
   @Cacheable(value = "pesquisarAcompanhantes", keyGenerator = "customKeyGenerator")
-  public ResponseEntity<PageResponse<AcompanhanteResponse>> pesquisar(
+  public PageResponse<AcompanhanteResponse> pesquisar(
       @PathVariable final Integer hospedeId,
       final FiltroAcompanhanteRequest filtro,
       @RequestParam(defaultValue = "0") final Integer pagina,
       @RequestParam(defaultValue = "20") final Integer tamanho) {
-    final Page<Acompanhante> resultado =
-        acompanhanteDatabaseGateway.search(filtro.toDomain(hospedeId), of(pagina, tamanho, DESC, ID));
+    final Page<Acompanhante> resultado = acompanhanteDatabaseGateway.search(
+        filtro.toDomain(hospedeId), of(pagina, tamanho, DESC, ID));
 
-    return ResponseEntity.ok(new PageResponse<>(
+    return new PageResponse<>(
         resultado.getContent().stream().map(AcompanhanteResponse::new).collect(toList()),
         resultado.getTotalElements(),
         resultado.getTotalPages(),
         pagina,
-        tamanho));
+        tamanho);
   }
 }

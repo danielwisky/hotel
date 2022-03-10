@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Controller
@@ -74,31 +75,33 @@ public class HospedagemController {
 
   @GetMapping("/{id}")
   @ResponseStatus(OK)
+  @ResponseBody
   @ApiOperation(value = "Buscar um hospedagens por id")
   @Cacheable(value = "buscarHospedagem", keyGenerator = "customKeyGenerator")
-  public ResponseEntity<HospedagemResponse> buscar(@PathVariable final Integer id) {
-    return ResponseEntity.ok(hospedagemDatabaseGateway
+  public HospedagemResponse buscar(@PathVariable final Integer id) {
+    return hospedagemDatabaseGateway
         .findById(id)
         .map(HospedagemResponse::new)
-        .orElseThrow(ResourceNotFoundException::new));
+        .orElseThrow(ResourceNotFoundException::new);
   }
 
   @GetMapping
   @ResponseStatus(OK)
+  @ResponseBody
   @ApiOperation(value = "Pesquisa hospedagens cadastrados")
   @Cacheable(value = "pesquisarHospedagens", keyGenerator = "customKeyGenerator")
-  public ResponseEntity<PageResponse<HospedagemResponse>> pesquisar(
+  public PageResponse<HospedagemResponse> pesquisar(
       final FiltroHospedagemRequest filtro,
       @RequestParam(defaultValue = "0") final Integer pagina,
       @RequestParam(defaultValue = "20") final Integer tamanho) {
     final Page<Hospedagem> resultado =
         hospedagemDatabaseGateway.search(filtro.toDomain(), of(pagina, tamanho, DESC, ID));
 
-    return ResponseEntity.ok(new PageResponse<>(
+    return new PageResponse<>(
         resultado.getContent().stream().map(HospedagemResponse::new).collect(toList()),
         resultado.getTotalElements(),
         resultado.getTotalPages(),
         pagina,
-        tamanho));
+        tamanho);
   }
 }

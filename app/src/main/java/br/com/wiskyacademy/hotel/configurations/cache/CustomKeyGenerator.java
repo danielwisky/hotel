@@ -1,8 +1,8 @@
 package br.com.wiskyacademy.hotel.configurations.cache;
 
 import java.lang.reflect.Method;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.interceptor.KeyGenerator;
-import org.springframework.util.StringUtils;
 
 public class CustomKeyGenerator implements KeyGenerator {
 
@@ -11,6 +11,6 @@ public class CustomKeyGenerator implements KeyGenerator {
         + "_"
         + method.getName()
         + "_"
-        + StringUtils.arrayToDelimitedString(params, "_");
+        + StringUtils.join(params, "_");
   }
 }
