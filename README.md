@@ -1,5 +1,11 @@
 # Sistema de Gestão de Hospedagem
 
+![](https://img.shields.io/badge/Status-Em%20Desenvolvimento-orange)
+![](https://img.shields.io/badge/Autor-Daniel%20Wisky-brightgreen)
+![](https://img.shields.io/badge/Language-Java-brightgreen)
+![](https://img.shields.io/badge/Framework-Spring%20Boot-brightgreen)
+![](https://img.shields.io/badge/Arquitetura-Clean%20Arch-brightgreen)
+
 O Sistema de Gestão de Hospedagem será utilizado na ministração de um curso aonde criaremos um projeto do zero.
 
 ## Vamos começar dividindo em algumas etapas:
