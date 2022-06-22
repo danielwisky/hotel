@@ -1,7 +1,7 @@
 package br.com.wiskyacademy.hotel.gateways.outputs.mysql;
 
-import static br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.specifications.HospedagemSpecification.toSpec;
-import static br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.specifications.HospedagemSpecification.toSpecWithoutFetch;
+import static br.com.wiskyacademy.hotel.gateways.outputs.mysql.repositories.specifications.HospedagemSpecification.toSpec;
+import static br.com.wiskyacademy.hotel.gateways.outputs.mysql.repositories.specifications.HospedagemSpecification.toSpecWithoutFetch;
 import static java.util.stream.Collectors.toList;
 
 import br.com.wiskyacademy.hotel.domains.FiltroHospedagem;

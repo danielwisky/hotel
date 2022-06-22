@@ -29,7 +29,8 @@ public class AcomodacaoTemplateLoader implements TemplateLoader {
           add("id", null);
           add("nome", "Quarto s/ id");
         }})
-        .addTemplate(VALIDO_OUTRO_NOME_E_DESCRICAO.name()).inherits(VALIDO_SEM_ID.name(), new Rule() {{
+        .addTemplate(VALIDO_OUTRO_NOME_E_DESCRICAO.name())
+        .inherits(VALIDO_SEM_ID.name(), new Rule() {{
           add("nome", "Um nome qualquer");
           add("descricao", "Uma descrição qualquer");
         }})

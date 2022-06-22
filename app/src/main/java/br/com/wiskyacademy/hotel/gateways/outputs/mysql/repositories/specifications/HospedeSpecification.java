@@ -1,4 +1,4 @@
-package br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.specifications;
+package br.com.wiskyacademy.hotel.gateways.outputs.mysql.repositories.specifications;
 
 import static br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.HospedeEntity_.DOCUMENTO;
 import static br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.HospedeEntity_.ENDERECO;

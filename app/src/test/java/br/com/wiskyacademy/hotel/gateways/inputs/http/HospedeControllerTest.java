@@ -145,7 +145,8 @@ public class HospedeControllerTest extends IntegrationTest {
     final Hospede hospede =
         hospedeDatabaseGateway.save(from(Hospede.class).gimme(VALIDO_SEM_ID.name()));
     final Hospede hospedeComOutroNomeEDocumento =
-        hospedeDatabaseGateway.save(from(Hospede.class).gimme(VALIDO_OUTRO_NOME_E_DOCUMENTO.name()));
+        hospedeDatabaseGateway.save(
+            from(Hospede.class).gimme(VALIDO_OUTRO_NOME_E_DOCUMENTO.name()));
     hospedeRequest.setEmail(hospedeComOutroNomeEDocumento.getEmail());
 
     mockMVC
@@ -159,7 +160,8 @@ public class HospedeControllerTest extends IntegrationTest {
   }
 
   @Test
-  public void aoEditarUmHospedeNaoDevePermitirAlterarEmailUtilizadoEmOutroHospede() throws Exception {
+  public void aoEditarUmHospedeNaoDevePermitirAlterarEmailUtilizadoEmOutroHospede()
+      throws Exception {
     mockMVC
         .perform(
             put(format(URL_WITH_PARAM, INTEGER_ONE)).contentType(APPLICATION_JSON).content("{}"))

@@ -31,7 +31,8 @@ public class HospedeTemplateLoader implements TemplateLoader {
           add("email", "semid@email.com");
           add("endereco", one(Endereco.class, VALIDO_SEM_ID.name()));
         }})
-        .addTemplate(VALIDO_OUTRO_NOME_E_DOCUMENTO.name()).inherits(VALIDO_SEM_ID.name(), new Rule() {{
+        .addTemplate(VALIDO_OUTRO_NOME_E_DOCUMENTO.name())
+        .inherits(VALIDO_SEM_ID.name(), new Rule() {{
           add("nome", "Um nome qualquer");
           add("documento", "N/I");
           add("email", "outro-email@email.com");

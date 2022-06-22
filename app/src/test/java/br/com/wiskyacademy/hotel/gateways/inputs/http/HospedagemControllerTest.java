@@ -95,10 +95,13 @@ public class HospedagemControllerTest extends IntegrationTest {
         .andExpect(jsonPath("$.acomodacao.id").value(reservaHospedagemRequest.getAcomodacao()))
         .andExpect(jsonPath("$.hospede.id").value(reservaHospedagemRequest.getHospede()))
         .andExpect(
-            jsonPath("$.acompanhantes", hasSize(reservaHospedagemRequest.getAcompanhantes().size())))
+            jsonPath("$.acompanhantes",
+                hasSize(reservaHospedagemRequest.getAcompanhantes().size())))
         .andExpect(
-            jsonPath("$.dataEntrada").value(reservaHospedagemRequest.getDataEntrada().format(ISO_DATE)))
-        .andExpect(jsonPath("$.dataSaida").value(reservaHospedagemRequest.getDataSaida().format(ISO_DATE)))
+            jsonPath("$.dataEntrada").value(
+                reservaHospedagemRequest.getDataEntrada().format(ISO_DATE)))
+        .andExpect(
+            jsonPath("$.dataSaida").value(reservaHospedagemRequest.getDataSaida().format(ISO_DATE)))
         .andExpect(jsonPath("$.status").value(StatusHospedagem.RESERVADO.name()));
   }
 
