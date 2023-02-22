@@ -1,8 +1,8 @@
 package br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request;
 
 import br.com.wiskyacademy.hotel.domains.Endereco;
+import jakarta.validation.constraints.NotBlank;
 import java.io.Serializable;
-import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data

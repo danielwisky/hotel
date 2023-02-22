@@ -2,7 +2,6 @@ package br.com.wiskyacademy.hotel.gateways.inputs.http;
 
 import static br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.AcomodacaoEntity_.ID;
 import static java.util.stream.Collectors.toList;
-import static org.springframework.data.domain.PageRequest.of;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -15,12 +14,12 @@ import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response.Hospede
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response.PageResponse;
 import br.com.wiskyacademy.hotel.usecases.AlterarHospede;
 import br.com.wiskyacademy.hotel.usecases.CriarHospede;
-import io.swagger.annotations.ApiOperation;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +43,6 @@ public class HospedeController {
 
   @PostMapping
   @ResponseStatus(OK)
-  @ApiOperation(value = "Criar um hospede")
   @CacheEvict(cacheNames = {"buscarHospede", "pesquisarHospedes"}, allEntries = true)
   public ResponseEntity<HospedeResponse> criar(
       @RequestBody @Valid final HospedeRequest hospedeRequest) {
@@ -55,7 +53,6 @@ public class HospedeController {
 
   @PutMapping("/{id}")
   @ResponseStatus(OK)
-  @ApiOperation(value = "Editar um hospede")
   @CacheEvict(cacheNames = {"buscarHospede", "pesquisarHospedes"}, allEntries = true)
   public ResponseEntity<HospedeResponse> editar(
       @PathVariable final Integer id,
@@ -68,7 +65,6 @@ public class HospedeController {
   @GetMapping("/{id}")
   @ResponseStatus(OK)
   @ResponseBody
-  @ApiOperation(value = "Buscar um hospede por id")
   @Cacheable(value = "buscarHospede", keyGenerator = "customKeyGenerator")
   public HospedeResponse buscar(@PathVariable final Integer id) {
     return hospedeDatabaseGateway
@@ -80,14 +76,13 @@ public class HospedeController {
   @GetMapping
   @ResponseStatus(OK)
   @ResponseBody
-  @ApiOperation(value = "Pesquisa hospedes cadastrados")
   @Cacheable(value = "pesquisarHospedes", keyGenerator = "customKeyGenerator")
   public PageResponse<HospedeResponse> pesquisar(
       final FiltroHospedeRequest filtro,
       @RequestParam(defaultValue = "0") final Integer pagina,
       @RequestParam(defaultValue = "20") final Integer tamanho) {
     final Page<Hospede> resultado =
-        hospedeDatabaseGateway.search(filtro.toDomain(), of(pagina, tamanho, DESC, ID));
+        hospedeDatabaseGateway.search(filtro.toDomain(), PageRequest.of(pagina, tamanho, DESC, ID));
 
     return new PageResponse<>(
         resultado.getContent().stream().map(HospedeResponse::new).collect(toList()),

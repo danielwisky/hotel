@@ -16,12 +16,14 @@ import static br.com.wiskyacademy.hotel.utils.CriteriaUtils.addNotEqualCondition
 import static java.util.Objects.nonNull;
 
 import br.com.wiskyacademy.hotel.domains.FiltroHospedagem;
+import br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.AcomodacaoEntity_;
 import br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.HospedagemEntity;
+import br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.HospedagemEntity_;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
@@ -63,8 +65,10 @@ public class HospedagemSpecification {
       predicates.add(builder.or(periodoEntrada, periodoSaida));
     }
 
-    addEqualConditionIfNotNull(builder, predicates, filtro.getAcomodacao(), root.get(ACOMODACAO));
-    addEqualConditionIfNotNull(builder, predicates, filtro.getHospede(), root.get(HOSPEDE));
+    addEqualConditionIfNotNull(
+        builder, predicates, filtro.getAcomodacao(), root.get(ACOMODACAO).get(AcomodacaoEntity_.ID));
+    addEqualConditionIfNotNull(
+        builder, predicates, filtro.getHospede(), root.get(HOSPEDE).get(HospedagemEntity_.ID));
     addGreaterThanOrEqualToIfNotNull(
         builder, predicates, filtro.getDataEntradaMaiorQue(), root.get(DATA_ENTRADA));
     addLessThanOrEqualToIfNotNull(

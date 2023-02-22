@@ -5,12 +5,12 @@ import static org.apache.commons.lang3.math.NumberUtils.INTEGER_ZERO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import br.com.wiskyacademy.hotel.UnitTest;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Predicate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Predicate;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 

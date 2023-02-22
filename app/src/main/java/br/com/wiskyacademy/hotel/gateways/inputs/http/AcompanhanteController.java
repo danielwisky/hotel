@@ -2,7 +2,6 @@ package br.com.wiskyacademy.hotel.gateways.inputs.http;
 
 import static br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.AcomodacaoEntity_.ID;
 import static java.util.stream.Collectors.toList;
-import static org.springframework.data.domain.PageRequest.of;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -15,12 +14,12 @@ import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response.Acompan
 import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response.PageResponse;
 import br.com.wiskyacademy.hotel.usecases.AlterarAcompanhante;
 import br.com.wiskyacademy.hotel.usecases.CriarAcompanhante;
-import io.swagger.annotations.ApiOperation;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,7 +44,6 @@ public class AcompanhanteController {
 
   @PostMapping
   @ResponseStatus(OK)
-  @ApiOperation(value = "Criar um acompanhante")
   @CacheEvict(cacheNames = {"buscarAcompanhante", "pesquisarAcompanhantes"}, allEntries = true)
   public ResponseEntity<AcompanhanteResponse> criar(
       @PathVariable final Integer hospedeId,
@@ -57,7 +55,6 @@ public class AcompanhanteController {
 
   @PutMapping("/{acompanhanteId}")
   @ResponseStatus(OK)
-  @ApiOperation(value = "Editar um acompanhante")
   @CacheEvict(cacheNames = {"buscarAcompanhante", "pesquisarAcompanhantes"}, allEntries = true)
   public ResponseEntity<AcompanhanteResponse> editar(
       @PathVariable final Integer hospedeId,
@@ -71,7 +68,6 @@ public class AcompanhanteController {
   @GetMapping("/{acompanhanteId}")
   @ResponseStatus(OK)
   @ResponseBody
-  @ApiOperation(value = "Buscar um acompanhante por id")
   @Cacheable(value = "buscarAcompanhante", keyGenerator = "customKeyGenerator")
   public AcompanhanteResponse buscar(
       @PathVariable final Integer hospedeId,
@@ -85,7 +81,6 @@ public class AcompanhanteController {
   @GetMapping
   @ResponseStatus(OK)
   @ResponseBody
-  @ApiOperation(value = "Pesquisa acompanhantes cadastrados")
   @Cacheable(value = "pesquisarAcompanhantes", keyGenerator = "customKeyGenerator")
   public PageResponse<AcompanhanteResponse> pesquisar(
       @PathVariable final Integer hospedeId,
@@ -93,7 +88,7 @@ public class AcompanhanteController {
       @RequestParam(defaultValue = "0") final Integer pagina,
       @RequestParam(defaultValue = "20") final Integer tamanho) {
     final Page<Acompanhante> resultado = acompanhanteDatabaseGateway.search(
-        filtro.toDomain(hospedeId), of(pagina, tamanho, DESC, ID));
+        filtro.toDomain(hospedeId), PageRequest.of(pagina, tamanho, DESC, ID));
 
     return new PageResponse<>(
         resultado.getContent().stream().map(AcompanhanteResponse::new).collect(toList()),

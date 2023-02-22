@@ -1,9 +1,9 @@
 package br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request;
 
+import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
-import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data

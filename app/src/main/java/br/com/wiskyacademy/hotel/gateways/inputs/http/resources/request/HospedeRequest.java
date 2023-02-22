@@ -3,13 +3,13 @@ package br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request;
 import static java.time.LocalDateTime.now;
 
 import br.com.wiskyacademy.hotel.domains.Hospede;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Optional;
-import javax.validation.Valid;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data

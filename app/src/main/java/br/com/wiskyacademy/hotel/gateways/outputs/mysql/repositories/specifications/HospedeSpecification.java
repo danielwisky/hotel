@@ -7,9 +7,9 @@ import static br.com.wiskyacademy.hotel.utils.CriteriaUtils.addLikeConditionIfNo
 
 import br.com.wiskyacademy.hotel.domains.FiltroHospede;
 import br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.HospedeEntity;
+import jakarta.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.criteria.Predicate;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;

@@ -3,9 +3,9 @@ package br.com.wiskyacademy.hotel.gateways.inputs.http.resources.request;
 import static java.time.LocalDateTime.now;
 
 import br.com.wiskyacademy.hotel.domains.Acompanhante;
+import jakarta.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDate;
-import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data

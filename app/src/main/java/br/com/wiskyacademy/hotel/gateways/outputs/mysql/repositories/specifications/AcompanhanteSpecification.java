@@ -4,14 +4,15 @@ import static br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.Acompanh
 import static br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.AcompanhanteEntity_.HOSPEDE;
 import static br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.AcompanhanteEntity_.NOME;
 import static br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.HospedeEntity_.ENDERECO;
+import static br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.HospedeEntity_.ID;
 import static br.com.wiskyacademy.hotel.utils.CriteriaUtils.addEqualConditionIfNotNull;
 import static br.com.wiskyacademy.hotel.utils.CriteriaUtils.addLikeConditionIfNotBlank;
 
 import br.com.wiskyacademy.hotel.domains.FiltroAcompanhante;
 import br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.AcompanhanteEntity;
+import jakarta.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.criteria.Predicate;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
@@ -22,7 +23,8 @@ public class AcompanhanteSpecification {
   public static Specification<AcompanhanteEntity> toSpec(final FiltroAcompanhante filtro) {
     return ((root, query, builder) -> {
       final List<Predicate> predicates = new ArrayList<>();
-      addEqualConditionIfNotNull(builder, predicates, filtro.getHospedeId(), root.get(HOSPEDE));
+      addEqualConditionIfNotNull(
+          builder, predicates, filtro.getHospedeId(), root.get(HOSPEDE).get(ID));
       addLikeConditionIfNotBlank(builder, predicates, filtro.getNome(), root.get(NOME));
       addLikeConditionIfNotBlank(builder, predicates, filtro.getDocumento(), root.get(DOCUMENTO));
 

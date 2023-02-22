@@ -2,7 +2,6 @@ package br.com.wiskyacademy.hotel.gateways.inputs.http;
 
 import static br.com.wiskyacademy.hotel.gateways.outputs.mysql.entities.AcomodacaoEntity_.ID;
 import static java.util.stream.Collectors.toList;
-import static org.springframework.data.domain.PageRequest.of;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -17,12 +16,12 @@ import br.com.wiskyacademy.hotel.gateways.inputs.http.resources.response.PageRes
 import br.com.wiskyacademy.hotel.usecases.CheckIn;
 import br.com.wiskyacademy.hotel.usecases.CheckOut;
 import br.com.wiskyacademy.hotel.usecases.ReservarHospedagem;
-import io.swagger.annotations.ApiOperation;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,7 +47,6 @@ public class HospedagemController {
 
   @PostMapping
   @ResponseStatus(OK)
-  @ApiOperation(value = "Reservar uma hospedagem")
   @CacheEvict(cacheNames = {"buscarHospedagem", "pesquisarHospedagens"}, allEntries = true)
   public ResponseEntity<HospedagemResponse> reservar(
       @RequestBody @Valid final ReservaHospedagemRequest reservaHospedagemRequest) {
@@ -59,7 +57,6 @@ public class HospedagemController {
 
   @PutMapping("/{id}/check-in")
   @ResponseStatus(OK)
-  @ApiOperation(value = "Realizar check-in de uma hospedagem")
   @CacheEvict(cacheNames = {"buscarHospedagem", "pesquisarHospedagens"}, allEntries = true)
   public ResponseEntity<HospedagemResponse> checkIn(@PathVariable final Integer id) {
     return ResponseEntity.ok(new HospedagemResponse(checkIn.executar(id)));
@@ -67,7 +64,6 @@ public class HospedagemController {
 
   @PutMapping("/{id}/check-out")
   @ResponseStatus(OK)
-  @ApiOperation(value = "Realizar check-out de uma hospedagem")
   @CacheEvict(cacheNames = {"buscarHospedagem", "pesquisarHospedagens"}, allEntries = true)
   public ResponseEntity<HospedagemResponse> checkOut(@PathVariable final Integer id) {
     return ResponseEntity.ok(new HospedagemResponse(checkOut.executar(id)));
@@ -76,7 +72,6 @@ public class HospedagemController {
   @GetMapping("/{id}")
   @ResponseStatus(OK)
   @ResponseBody
-  @ApiOperation(value = "Buscar um hospedagens por id")
   @Cacheable(value = "buscarHospedagem", keyGenerator = "customKeyGenerator")
   public HospedagemResponse buscar(@PathVariable final Integer id) {
     return hospedagemDatabaseGateway
@@ -88,14 +83,13 @@ public class HospedagemController {
   @GetMapping
   @ResponseStatus(OK)
   @ResponseBody
-  @ApiOperation(value = "Pesquisa hospedagens cadastrados")
   @Cacheable(value = "pesquisarHospedagens", keyGenerator = "customKeyGenerator")
   public PageResponse<HospedagemResponse> pesquisar(
       final FiltroHospedagemRequest filtro,
       @RequestParam(defaultValue = "0") final Integer pagina,
       @RequestParam(defaultValue = "20") final Integer tamanho) {
     final Page<Hospedagem> resultado =
-        hospedagemDatabaseGateway.search(filtro.toDomain(), of(pagina, tamanho, DESC, ID));
+        hospedagemDatabaseGateway.search(filtro.toDomain(), PageRequest.of(pagina, tamanho, DESC, ID));
 
     return new PageResponse<>(
         resultado.getContent().stream().map(HospedagemResponse::new).collect(toList()),
