@@ -23,7 +23,7 @@
     <springdoc.version>1.6.14</springdoc.version>
     <commons-collections4.version>4.4</commons-collections4.version>
     <mockito-core.version>5.1.1</mockito-core.version>
-    <h2database.version>2.1.214</h2database.version>
+    <h2database.version>2.2.220</h2database.version>
     <fixture-factory.version>3.1.0</fixture-factory.version>
     <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
     <pitest-plugin.version>1.9.2</pitest-plugin.version>
